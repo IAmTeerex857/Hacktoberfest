@@ -162,7 +162,7 @@ export function BuilderPass() {
           />
         </div>
         <p className="mt-2 text-[12px] leading-relaxed text-faint">
-          Just for fun. Nothing is saved here — registration happens on the signup form.
+          Just for fun. Nothing is saved here. Registration happens on the signup form.
         </p>
       </div>
     </div>

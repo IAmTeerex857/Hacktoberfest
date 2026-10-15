@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Billboard, RoundedBox } from "@react-three/drei";
+import { RoundedBox } from "@react-three/drei";
 import {
   Color,
   Group,
@@ -17,11 +17,8 @@ import {
   CARD_H,
   CARD_SPECS,
   CARD_W,
-  LABEL_H,
-  LABEL_W,
   TILE_SPECS,
   drawCard,
-  drawLabel,
   drawTile,
   palettes,
   readFonts,
@@ -31,7 +28,7 @@ import {
 /*
  * The hero scene: an isometric payment rail. Cards (code, agent runs, transfers,
  * skills, webhooks, recon) ride a stepping conveyor; each dock under the agent
- * orb, gets scanned, and flips from pending to settled before moving on.
+ * station, gets scanned, and flips from pending to settled before moving on.
  * Orthographic camera + flat shading + no tone mapping keeps every edge crisp
  * and every colour exactly what the palette says.
  */
@@ -59,7 +56,6 @@ const mod = (a: number, n: number) => ((a % n) + n) % n;
 type Textures = {
   cards: { pending: Texture; done: Texture }[];
   tiles: Texture[];
-  label: Texture;
 };
 
 function useTextures(theme: "light" | "dark", ready: boolean): Textures | null {
@@ -70,7 +66,6 @@ function useTextures(theme: "light" | "dark", ready: boolean): Textures | null {
     return {
       cards: CARD_SPECS.map((s) => ({ pending: drawCard(s, false, p, f), done: drawCard(s, true, p, f) })),
       tiles: TILE_SPECS.map((s) => drawTile(s, p, f)),
-      label: drawLabel("spotflow agent", p, f),
     };
   }, [theme, ready]);
 
@@ -82,7 +77,6 @@ function useTextures(theme: "light" | "dark", ready: boolean): Textures | null {
         c.done.dispose();
       });
       tex.tiles.forEach((t) => t.dispose());
-      tex.label.dispose();
     },
     [tex],
   );
@@ -98,12 +92,14 @@ function Rig({ compact }: { compact: boolean }) {
 
   useLayoutEffect(() => {
     const { camera } = get();
+    // The canvas is full-bleed; anchor the docked card to the 1200px content column.
+    const column = Math.min(size.width, 1200);
     const zoom = compact
       ? Math.min(size.width / 7.5, size.height / 6, 72)
-      : Math.min(size.width / 12.5, size.height / 7.8, 112);
+      : Math.min(column / 12.5, size.height / 7.8, 112);
     // Where the station (world origin) should sit on screen, as a fraction of the canvas.
-    const fx = compact ? 0.5 : 0.78;
-    const fy = compact ? 0.8 : 0.86;
+    const fx = compact ? 0.5 : ((size.width - column) / 2 + column * 0.78) / size.width;
+    const fy = compact ? 0.8 : 0.84;
     const dx = ((fx - 0.5) * size.width) / zoom;
     const dy = ((fy - 0.5) * size.height) / zoom;
     const target = new Vector3().addScaledVector(RIGHT, -dx).addScaledVector(UP, dy);
@@ -199,7 +195,6 @@ function Conveyor({ tex, p, clock }: { tex: Textures; p: Palette; clock: React.R
   const faces = useRef<(Mesh | null)[]>([]);
   const state = useRef<boolean[]>(Array(N).fill(false));
   const scan = useRef<Mesh>(null);
-  const beam = useRef<Mesh>(null);
 
   // Theme changed → textures were rebuilt; re-point every face.
   useLayoutEffect(() => {
@@ -250,7 +245,6 @@ function Conveyor({ tex, p, clock }: { tex: Textures; p: Palette; clock: React.R
       scan.current.visible = scanning;
       scan.current.position.y = CARD_LIFT + CARD_H - 0.08 - Math.max(scanK, 0) * (CARD_H - 0.16);
     }
-    if (beam.current) beam.current.visible = scanning;
   });
 
   return (
@@ -271,74 +265,6 @@ function Conveyor({ tex, p, clock }: { tex: Textures; p: Palette; clock: React.R
         <boxGeometry args={[0.02, 0.045, CARD_W + 0.12]} />
         <meshBasicMaterial color={p.green} toneMapped={false} />
       </mesh>
-      {/* orb → card tether */}
-      <mesh ref={beam} position={[CARD_X, CARD_LIFT + CARD_H + 0.55, 0]} visible={false}>
-        <boxGeometry args={[0.035, 1.1, 0.035]} />
-        <meshBasicMaterial color={p.green} toneMapped={false} />
-      </mesh>
-    </group>
-  );
-}
-
-/* -------------------------------------------------------------------- orb */
-
-function AgentOrb({ tex, p, clock, pointer }: { tex: Textures; p: Palette; clock: React.RefObject<Clock>; pointer: React.RefObject<{ x: number; y: number }> }) {
-  const core = useRef<Mesh>(null);
-  const ringA = useRef<Mesh>(null);
-  const ringB = useRef<Mesh>(null);
-  const sat = useRef<Mesh>(null);
-  const root = useRef<Group>(null);
-  const baseY = CARD_LIFT + CARD_H + 1.75;
-
-  useFrame((_, dt) => {
-    const t = clock.current.t;
-    const phase = t % CYCLE;
-    const dwell = phase - MOVE;
-    const scanning = dwell > SCAN_START && dwell < SCAN_START + SCAN_LEN;
-    if (core.current) {
-      core.current.rotation.y += dt * 0.6;
-      core.current.rotation.x += dt * 0.25;
-      const target = scanning ? 1.12 : 1;
-      const s = core.current.scale.x + (target - core.current.scale.x) * (1 - Math.exp(-dt * 12));
-      core.current.scale.setScalar(s);
-    }
-    if (ringA.current) ringA.current.rotation.z += dt * (scanning ? 3 : 0.8);
-    if (ringB.current) ringB.current.rotation.x += dt * (scanning ? -2.4 : -0.6);
-    if (sat.current) {
-      const a = t * 1.8;
-      sat.current.position.set(Math.cos(a) * 1.15, Math.sin(a * 0.7) * 0.25, Math.sin(a) * 1.15);
-      sat.current.rotation.set(a, a * 0.6, 0);
-    }
-    if (root.current) {
-      root.current.position.y = baseY + Math.sin(t * 1.4) * 0.08;
-      root.current.position.x = CARD_X + pointer.current.x * 0.15;
-    }
-  });
-
-  return (
-    <group ref={root} position={[CARD_X, baseY, 0]}>
-      <mesh ref={core} castShadow>
-        <icosahedronGeometry args={[0.58, 1]} />
-        <meshLambertMaterial color={p.blue} flatShading />
-      </mesh>
-      <mesh ref={ringA} rotation={[Math.PI / 2.4, 0, 0]}>
-        <torusGeometry args={[0.98, 0.028, 8, 72]} />
-        <meshBasicMaterial color={p.ink} toneMapped={false} />
-      </mesh>
-      <mesh ref={ringB} rotation={[0, Math.PI / 3, Math.PI / 2]}>
-        <torusGeometry args={[0.82, 0.022, 8, 72]} />
-        <meshBasicMaterial color={p.green} toneMapped={false} />
-      </mesh>
-      <mesh ref={sat} castShadow>
-        <boxGeometry args={[0.16, 0.16, 0.16]} />
-        <meshLambertMaterial color={p.green} />
-      </mesh>
-      <Billboard position={[0, 1.15, 0]}>
-        <mesh>
-          <planeGeometry args={[LABEL_W * 0.62, LABEL_H * 0.62]} />
-          <meshBasicMaterial map={tex.label} transparent alphaTest={0.5} toneMapped={false} />
-        </mesh>
-      </Billboard>
     </group>
   );
 }
@@ -348,9 +274,9 @@ function AgentOrb({ tex, p, clock, pointer }: { tex: Textures; p: Palette; clock
 // Tiles are placed in screen space relative to the docked card (right, up,
 // depth along the view axis), so they never drift under the copy or off-frame.
 const TILE_SCREEN: [number, number, number][] = [
-  [2.1, 3.0, -2],
-  [1.6, 5.6, -3],
-  [-2.6, 5.3, -4],
+  [2.2, 3.1, -2],
+  [1.5, 5.7, -3],
+  [-0.7, 4.3, -4],
 ];
 const TILE_POS = TILE_SCREEN.map(([r, u, d]) =>
   new Vector3().addScaledVector(RIGHT, r).addScaledVector(UP, u).addScaledVector(VIEW, d).toArray(),
@@ -444,7 +370,6 @@ function Scene({
       <group ref={world}>
         <Rail p={p} />
         <Conveyor tex={tex} p={p} clock={clock} />
-        <AgentOrb tex={tex} p={p} clock={clock} pointer={pointer} />
         <Tiles tex={tex} p={p} />
       </group>
     </>

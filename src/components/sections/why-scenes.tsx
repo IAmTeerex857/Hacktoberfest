@@ -5,7 +5,7 @@ import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/rea
 import { Check, GitMerge, Search } from "lucide-react";
 import { Blobatar } from "@blobatar/react";
 import { InlineLoader, TextLoader } from "generative-loaders";
-import { Slab, Stage } from "@/components/iso/iso";
+import { Slab, Stage, Upright } from "@/components/iso/iso";
 
 function useLive(ms: number) {
   const ref = useRef<HTMLDivElement>(null);
@@ -102,7 +102,10 @@ export function PortfolioScene() {
             <p className="truncate text-[13px] font-semibold text-ink">feat(recipes): payout agent skill</p>
             <p className="mt-0.5 font-mono text-[11px] text-muted">#128 · merged into main</p>
           </div>
-          <span className="rounded-full border border-line px-2 py-0.5 font-mono text-[11px] text-green-ink">+412 −36</span>
+          <span className="flex gap-1.5 rounded-full border border-line px-2 py-0.5 font-mono text-[11px]">
+            <span className="text-green-ink">+412</span>
+            <span className="text-red">−36</span>
+          </span>
         </div>
       </div>
       <div className="rounded-2xl border border-line bg-surface p-4">
@@ -157,7 +160,6 @@ export function DocsAnswerScene() {
           {qShown}
           {live && local < QUESTION.length && <span className="ml-px inline-block h-4 w-[2px] translate-y-0.5 animate-pulse bg-blue" />}
         </span>
-        <kbd className="rounded border border-line px-1.5 font-mono text-[10px] text-faint">⌘K</kbd>
       </div>
       <div className="min-h-[148px] px-4 py-4">
         <p className="mb-2 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.12em] text-faint">
@@ -185,55 +187,129 @@ export function DocsAnswerScene() {
   );
 }
 
-/* ------------------------------------------------------- prizes podium */
+/* ------------------------------------------------------ swag & prizes */
 
-const SWAG = [
-  { glyph: "✦", tone: "blue" as const, x: 30, y: 40 },
-  { glyph: "{ }", tone: "ink" as const, x: 130, y: 26 },
-  { glyph: "₦", tone: "green" as const, x: 150, y: 120 },
-  { glyph: "tee", tone: "surface" as const, x: 20, y: 140 },
+// Flat, two-tone icons that stand upright in the iso scene.
+function Trophy() {
+  return (
+    <svg viewBox="0 0 48 48" width={46} height={46} aria-hidden="true">
+      <path d="M10 10H5v5a8 8 0 0 0 8 8M38 10h5v5a8 8 0 0 1-8 8" fill="none" stroke="#d9961a" strokeWidth={3.5} />
+      <path d="M12 6h24v12a12 12 0 0 1-24 0z" fill="#f2b33d" />
+      <path d="M21 29h6v7h-6z" fill="#d9961a" />
+      <path d="M14 36h20v6H14z" fill="#d9961a" />
+      <path d="M17 11h4v9h-4z" fill="#fff" opacity={0.5} />
+    </svg>
+  );
+}
+
+function Tee() {
+  return (
+    <svg viewBox="0 0 48 48" width={48} height={48} aria-hidden="true">
+      <path d="M17 6 5 12l4 9 5-3v24h20V18l5 3 4-9-12-6c-1 3-3.5 5-7 5s-6-2-7-5z" fill="var(--blue)" />
+      <circle cx="24" cy="24" r="4" fill="#fff" />
+    </svg>
+  );
+}
+
+function Sticker() {
+  return (
+    <svg viewBox="0 0 48 48" width={40} height={40} aria-hidden="true">
+      <circle cx="24" cy="24" r="20" fill="var(--green)" />
+      <path d="m19 18-6 6 6 6M29 18l6 6-6 6" fill="none" stroke="#fff" strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function Medal() {
+  return (
+    <svg viewBox="0 0 48 48" width={40} height={40} aria-hidden="true">
+      <path d="M14 4h8l6 14h-8z" fill="var(--blue)" />
+      <path d="M34 4h-8l-6 14h8z" fill="var(--green)" />
+      <circle cx="24" cy="30" r="12" fill="#f2b33d" />
+      <circle cx="24" cy="30" r="7" fill="#d9961a" />
+    </svg>
+  );
+}
+
+const PRIZE_PHASES = [1100, 700, 2600, 1000];
+const BOX = { x: 62, y: 62, size: 76, depth: 48 };
+// where each item floats once the box is open (plane offsets from the box centre, height)
+const ITEMS = [
+  { el: <Trophy />, dx: 6, dy: 6, z: 128 },
+  { el: <Tee />, dx: -30, dy: 40, z: 96 },
+  { el: <Sticker />, dx: 56, dy: 10, z: 100 },
+  { el: <Medal />, dx: 22, dy: 58, z: 80 },
 ];
 
 export function PrizesScene() {
-  const { ref, n } = useLive(1800);
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { margin: "-10% 0px" });
+  const reduced = useReducedMotion();
+  const [phase, setPhase] = useState(0);
+
+  useEffect(() => {
+    if (!inView || reduced) return;
+    const id = setTimeout(() => setPhase((p) => (p + 1) % PRIZE_PHASES.length), PRIZE_PHASES[phase]);
+    return () => clearTimeout(id);
+  }, [phase, inView, reduced]);
+
+  const shown = reduced ? 2 : phase;
+  const open = shown === 1 || shown === 2;
+  const out = shown === 2;
+  const cx = BOX.x + BOX.size / 2;
+  const cy = BOX.y + BOX.size / 2;
+  const top = 10 + BOX.depth;
+
   return (
     <div ref={ref}>
-      <Stage size={200} className="h-[260px]">
+      <Stage size={200} className="h-[280px]">
         <Slab x={0} y={0} w={200} h={200} depth={10} radius={10} tone="sunken" topClassName="dot-grid" />
-        {/* podium as a staircase receding to the back: 1 · 2 · 3 */}
-        <Slab x={30} y={72} w={48} h={56} depth={74} tone="blue" style={{ z: 10 }} topClassName="flex items-center justify-center">
-          <span className="font-mono text-[15px] font-bold text-white">1</span>
+
+        {/* box body; its top reads as the dark inside once the lid is off */}
+        <Slab
+          x={BOX.x}
+          y={BOX.y}
+          w={BOX.size}
+          h={BOX.size}
+          depth={BOX.depth}
+          radius={4}
+          tone="blue"
+          top="color-mix(in oklab, var(--blue) 45%, black)"
+          style={{ z: 10 }}
+        />
+
+        {/* lid with ribbon, hinged on its back edge */}
+        <Slab
+          x={BOX.x - 4}
+          y={BOX.y - 4}
+          w={BOX.size + 8}
+          h={BOX.size + 8}
+          depth={8}
+          radius={4}
+          tone="green"
+          initial={false}
+          animate={{ z: top, rotateX: open ? 108 : 0 }}
+          transition={{ type: "spring", stiffness: 90, damping: 15 }}
+          style={{ transformOrigin: "50% 0%" }}
+          topClassName="relative"
+        >
+          <span className="absolute inset-y-0 left-1/2 w-3 -translate-x-1/2 bg-white" />
+          <span className="absolute inset-x-0 top-1/2 h-3 -translate-y-1/2 bg-white" />
         </Slab>
-        <Slab x={80} y={72} w={48} h={56} depth={46} tone="ink" style={{ z: 10 }} topClassName="flex items-center justify-center">
-          <span className="font-mono text-[15px] font-bold text-bg">2</span>
-        </Slab>
-        <Slab x={130} y={72} w={48} h={56} depth={24} tone="green" style={{ z: 10 }} topClassName="flex items-center justify-center">
-          <span className="font-mono text-[15px] font-bold text-white">3</span>
-        </Slab>
-        {/* floating swag */}
-        {SWAG.map((s, i) => (
-          <Slab
-            key={s.glyph}
-            x={s.x}
-            y={s.y}
-            w={30}
-            h={30}
-            depth={6}
-            radius={6}
-            tone={s.tone}
+
+        {/* swag rising out */}
+        {ITEMS.map((it, i) => (
+          <Upright
+            key={i}
+            x={cx + (out ? it.dx : 0)}
+            y={cy + (out ? it.dy : 0)}
             initial={false}
-            animate={{ z: 96 + ((n + i) % 2) * 22, rotateZ: ((n + i) % 4) * 90 }}
-            transition={{ type: "spring", stiffness: 120, damping: 14, delay: i * 0.08 }}
-            topClassName="flex items-center justify-center"
+            animate={{ z: out ? it.z : top - 30 }}
+            transition={{ type: "spring", stiffness: 80, damping: 13, delay: out ? 0.1 + i * 0.12 : 0 }}
+            style={{ transition: "left 0.8s cubic-bezier(0.22,1,0.36,1), top 0.8s cubic-bezier(0.22,1,0.36,1)" }}
           >
-            <span
-              className={`font-mono text-[10px] font-bold ${
-                s.tone === "surface" ? "text-ink" : s.tone === "ink" ? "text-bg" : "text-white"
-              }`}
-            >
-              {s.glyph}
-            </span>
-          </Slab>
+            {it.el}
+          </Upright>
         ))}
       </Stage>
     </div>

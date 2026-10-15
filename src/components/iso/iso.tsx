@@ -6,7 +6,7 @@ import type { CSSProperties, ReactNode } from "react";
 /*
  * CSS 3D isometric toolkit. A Stage tilts a flat plane (rotateX 57°, rotateZ 45°);
  * Slabs are solid boxes on that plane with a lit top and two shaded sides, so
- * everything reads as real geometry with flat colours — no blur, no glow.
+ * everything reads as real geometry with flat colours: no blur, no glow.
  *
  * Plane coordinates: x → right-down on screen, y → left-down, z → up.
  * With this camera the south (+y) and east (+x) sides are the visible ones.
@@ -14,18 +14,21 @@ import type { CSSProperties, ReactNode } from "react";
 
 export function Stage({
   size = 260,
+  depth,
   className = "",
   children,
   style,
 }: {
   size?: number;
+  /** plane extent along y when it isn't square */
+  depth?: number;
   className?: string;
   children: ReactNode;
   style?: CSSProperties;
 }) {
   return (
     <div aria-hidden="true" className={`pointer-events-none relative flex items-center justify-center ${className}`} style={style}>
-      <div className="iso-stage relative" style={{ width: size, height: size }}>
+      <div className="iso-stage relative" style={{ width: size, height: depth ?? size }}>
         {children}
       </div>
     </div>
@@ -160,10 +163,11 @@ export function Upright({
   z = 0,
   children,
   className = "",
+  style,
   ...motionProps
 }: { x: number; y: number; z?: number; children: ReactNode; className?: string } & Omit<HTMLMotionProps<"div">, "children">) {
   return (
-    <motion.div className={`iso-face ${className}`} style={{ left: x, top: y, transformStyle: "preserve-3d" }} {...motionProps}>
+    <motion.div className={`iso-face ${className}`} style={{ left: x, top: y, transformStyle: "preserve-3d", ...style }} {...motionProps}>
       <div style={{ transform: `translateZ(${z}px) rotateZ(-45deg) rotateX(-57deg)`, transformOrigin: "bottom center" }} className="iso-face bottom-0 left-1/2 -translate-x-1/2">
         {children}
       </div>

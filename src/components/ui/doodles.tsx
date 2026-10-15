@@ -6,7 +6,7 @@ import type { CSSProperties, ReactNode } from "react";
 /*
  * Structured doodles: technical-drawing marks (crosshairs, dimension lines,
  * callouts, braces, wireframe cubes) that draw themselves in on scroll.
- * Decorative only — every one is aria-hidden.
+ * Decorative only; every one is aria-hidden.
  */
 
 const EASE: [number, number, number, number] = [0.65, 0, 0.35, 1];
@@ -76,55 +76,6 @@ export function Plus({ className, style, size = 12 }: Pos & { size?: number }) {
   );
 }
 
-export function DimensionLine({
-  label,
-  width = 200,
-  className,
-  style,
-}: Pos & { label: string; width?: number }) {
-  return (
-    <div aria-hidden="true" className={`pointer-events-none absolute flex flex-col items-center gap-1 text-doodle ${className ?? ""}`} style={{ width, ...style }}>
-      <span className="font-mono text-[10px] tracking-widest text-faint uppercase">{label}</span>
-      <svg viewBox={`0 0 ${width} 12`} width={width} height={12} fill="none" stroke="currentColor" strokeWidth={1.25}>
-        <motion.path
-          d={`M1 1v10M${width - 1} 1v10M1 6h${width - 2}M7 2 1 6l6 4M${width - 7} 2l6 4-6 4`}
-          initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: EASE }}
-        />
-      </svg>
-    </div>
-  );
-}
-
-export function Callout({
-  label,
-  className,
-  style,
-  flip = false,
-}: Pos & { label: string; flip?: boolean }) {
-  return (
-    <div
-      aria-hidden="true"
-      className={`pointer-events-none absolute flex items-end gap-1 text-doodle ${flip ? "flex-row-reverse" : ""} ${className ?? ""}`}
-      style={style}
-    >
-      <svg width="64" height="28" viewBox="0 0 64 28" fill="none" stroke="currentColor" strokeWidth={1.25} className={flip ? "-scale-x-100" : ""}>
-        <circle cx="3" cy="25" r="2.5" fill="currentColor" stroke="none" />
-        <motion.path
-          d="M3 25 20 4h44"
-          initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9, ease: EASE }}
-        />
-      </svg>
-      <span className="-mb-0.5 -translate-y-5 whitespace-nowrap font-mono text-[10.5px] text-faint">{label}</span>
-    </div>
-  );
-}
-
 export function Brace({ className, style, height = 120 }: Pos & { height?: number }) {
   const h = height;
   const m = h / 2;
@@ -148,23 +99,6 @@ export function WireCube({ className, style, size = 56 }: Pos & { size?: number 
   );
 }
 
-export function CurvedArrow({ className, style, width = 120 }: Pos & { width?: number }) {
-  return (
-    <Svg viewBox="0 0 120 60" width={width} height={width / 2} className={className} style={style}>
-      <motion.path d="M4 52C30 10 78 2 112 18" variants={draw} custom={0} />
-      <motion.path d="M100 8l12 10-15 4" variants={draw} custom={1} />
-    </Svg>
-  );
-}
-
-export function Squiggle({ className, style, width = 90 }: Pos & { width?: number }) {
-  return (
-    <Svg viewBox="0 0 90 14" width={width} height={(width / 90) * 14} className={className} style={style}>
-      <motion.path d="M2 7c6-8 10-8 16 0s10 8 16 0 10-8 16 0 10 8 16 0 10-8 16 0" variants={draw} />
-    </Svg>
-  );
-}
-
 export function Asterisk({ className, style, size = 22 }: Pos & { size?: number }) {
   return (
     <Svg viewBox="0 0 22 22" width={size} height={size} className={className} style={style}>
@@ -182,16 +116,5 @@ export function Brackets({ className, style, label = "{ }" }: Pos & { label?: st
     >
       {label}
     </span>
-  );
-}
-
-/** Small circles placed where the frame's hairlines intersect. */
-export function FrameNodes({ y = "top" }: { y?: "top" | "bottom" }) {
-  const pos = y === "top" ? "top-0" : "top-full";
-  return (
-    <>
-      <span aria-hidden="true" className={`node left-0 ${pos}`} />
-      <span aria-hidden="true" className={`node left-full ${pos}`} />
-    </>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowRight, ArrowUpRight, Check, Copy, Moon, Sparkles, Sun, Zap } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, Copy, Moon, Sparkles, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { InlineLoader } from "generative-loaders";
 
@@ -27,13 +27,13 @@ const base =
   "relative inline-flex select-none items-center justify-center rounded-full font-medium tracking-tight cursor-pointer transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
 
 /**
- * Leading icon slides out, trailing arrow slides in on hover. When it links
+ * Optional leading icon slides out, trailing arrow slides in on hover. When it links
  * off-site it shows a short loader on click so the hand-off feels intentional.
  */
 export function SlideArrowButton({
   href,
   children,
-  icon = <Zap className="size-4" />,
+  icon,
   variant = "primary",
   size = "md",
   external = false,
@@ -94,7 +94,7 @@ export function SlideArrowButton({
             className="flex items-center"
           >
             <AnimatePresence mode="popLayout" initial={false}>
-              {!hovered && (
+              {icon && !hovered && (
                 <motion.span
                   key="lead"
                   initial={{ opacity: 0, x: -10 }}

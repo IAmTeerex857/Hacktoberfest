@@ -1,8 +1,10 @@
 "use client";
 
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { Check } from "lucide-react";
-import { Slab, Stage } from "@/components/iso/iso";
+import { Slab, Stage, Upright } from "@/components/iso/iso";
+import { AGENTS } from "@/components/brand/agents";
+import { SpotflowMark } from "@/components/brand/logo";
 import { usePhase } from "@/components/iso/use-phase";
 
 const spring = { type: "spring", stiffness: 260, damping: 24 } as const;
@@ -14,83 +16,91 @@ function Plate() {
 
 /* ---------------------------------------------------------------- agents */
 
-const AGENT_PHASES = [900, 900, 900, 1500];
-// packet stops: chat → agent → payout → payout
-const STOPS = [
-  { x: 46, y: 152 },
-  { x: 104, y: 96 },
-  { x: 166, y: 40 },
-  { x: 166, y: 40 },
+// Each agent takes a turn: lift, send a tool call down its route to the
+// Spotflow API in the middle, the API settles it, a result chip pops up.
+const AGENT_SLOTS = [
+  { x: 14, y: 14, tool: "create_payout()" },
+  { x: 150, y: 14, tool: "list_transactions()" },
+  { x: 150, y: 150, tool: "verify_webhook()" },
+  { x: 14, y: 150, tool: "get_balance()" },
 ];
+const AGENT_SIZE = 56;
+const API = { x: 80, y: 80, size: 60 };
+const AGENT_PHASES = AGENT_SLOTS.flatMap(() => [1100, 1300]);
+
+function AgentLogo({ path, hex }: { path: string; hex: string }) {
+  return (
+    <svg viewBox="0 0 24 24" width={26} height={26} fill={hex} aria-hidden="true">
+      <path d={path} />
+    </svg>
+  );
+}
 
 export function AgentsScene() {
-  const { ref, phase } = usePhase(AGENT_PHASES);
-  const settled = phase === 3;
-  const thinking = phase === 1;
+  const { ref, phase } = usePhase(AGENT_PHASES, 1);
+  const active = Math.floor(phase / 2);
+  const settled = phase % 2 === 1;
+  const center = API.x + API.size / 2;
 
   return (
     <div ref={ref}>
       <Stage size={PLATE} className="h-[250px]">
         <Plate />
-        {/* route */}
+        {/* routes */}
         <svg className="iso-face left-0 top-0" width={PLATE} height={PLATE} style={{ transform: "translateZ(12.5px)" }}>
-          <path
-            d="M52 158 L110 102 L172 46"
-            fill="none"
-            stroke="var(--blue)"
-            strokeWidth={2}
-            strokeDasharray="5 7"
-            className="dash-flow"
-          />
+          {AGENT_SLOTS.map((s, i) => (
+            <path
+              key={i}
+              d={`M${s.x + AGENT_SIZE / 2} ${s.y + AGENT_SIZE / 2} L${center} ${center}`}
+              fill="none"
+              stroke={i === active ? "var(--blue)" : "var(--line-strong)"}
+              strokeWidth={2}
+              strokeDasharray="5 7"
+              className={i === active ? "dash-flow" : ""}
+            />
+          ))}
         </svg>
 
-        {/* chat prompt */}
-        <Slab x={14} y={128} w={72} h={58} depth={8} style={{ z: 12 }} topClassName="p-2">
-          <div className="font-mono text-[8px] leading-tight text-muted">prompt</div>
-          <div className="mt-1 text-[9.5px] font-medium leading-tight text-ink">Pay my vendors</div>
-        </Slab>
-
-        {/* the agent */}
+        {/* Spotflow API */}
         <Slab
-          x={74}
-          y={66}
-          w={60}
-          h={60}
-          depth={24}
+          x={API.x}
+          y={API.y}
+          w={API.size}
+          h={API.size}
+          depth={22}
           tone="blue"
+          top={settled ? "var(--green)" : undefined}
           style={{ z: 12 }}
-          animate={{ z: thinking ? 30 : 12 }}
-          transition={spring}
           topClassName="flex items-center justify-center"
         >
-          <motion.span
-            className="text-[22px] leading-none text-white"
-            animate={{ rotate: thinking ? 180 : 0, scale: thinking ? 1.15 : 1 }}
-            transition={spring}
-          >
-            ✦
-          </motion.span>
+          <SpotflowMark className="h-6 w-auto text-white" />
         </Slab>
 
-        {/* payout */}
-        <Slab
-          x={132}
-          y={10}
-          w={72}
-          h={60}
-          depth={8}
-          style={{ z: 12 }}
-          top={settled ? "var(--green)" : undefined}
-          topClassName="p-2"
-        >
-          <div className={`font-mono text-[8px] leading-tight ${settled ? "text-white/80" : "text-muted"}`}>payout</div>
-          <div className={`mt-0.5 flex items-center gap-1 text-[11px] font-semibold ${settled ? "text-white" : "text-ink"}`}>
-            ₦80,000 {settled && <Check className="size-3" strokeWidth={3} />}
-          </div>
-        </Slab>
+        {/* agents */}
+        {AGENTS.map((a, i) => {
+          const slot = AGENT_SLOTS[i];
+          const on = i === active;
+          return (
+            <Slab
+              key={a.slug}
+              x={slot.x}
+              y={slot.y}
+              w={AGENT_SIZE}
+              h={AGENT_SIZE}
+              depth={10}
+              initial={false}
+              animate={{ z: on ? 26 : 12 }}
+              transition={spring}
+              topClassName="flex items-center justify-center"
+            >
+              <AgentLogo path={a.path} hex={a.hex} />
+            </Slab>
+          );
+        })}
 
-        {/* data packet */}
+        {/* tool call travelling to the API */}
         <Slab
+          key={`call-${active}`}
           x={0}
           y={0}
           w={14}
@@ -98,10 +108,35 @@ export function AgentsScene() {
           depth={12}
           radius={3}
           tone="green"
-          initial={false}
-          animate={{ x: STOPS[phase].x - 7, y: STOPS[phase].y - 7, z: phase === 1 ? 40 : 24 }}
-          transition={{ type: "spring", stiffness: 140, damping: 18 }}
+          initial={{
+            x: AGENT_SLOTS[active].x + AGENT_SIZE / 2 - 7,
+            y: AGENT_SLOTS[active].y + AGENT_SIZE / 2 - 7,
+            z: 40,
+          }}
+          animate={{ x: center - 7, y: center - 7, z: settled ? 14 : 40 }}
+          transition={{ type: "spring", stiffness: 70, damping: 16 }}
         />
+
+        {/* result chip over the active agent */}
+        <Upright x={AGENT_SLOTS[active].x + AGENT_SIZE / 2} y={AGENT_SLOTS[active].y + AGENT_SIZE / 2} z={52}>
+          <AnimatePresence>
+            {settled && (
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, y: 8, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -6, scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 300, damping: 24 }}
+                className="flex items-center gap-1 whitespace-nowrap rounded-full bg-ink px-2 py-1 font-mono text-[9px] font-medium text-bg"
+              >
+                <span style={{ color: AGENTS[active].hex }}>{AGENTS[active].name}</span>
+                <span className="opacity-60">·</span>
+                {AGENT_SLOTS[active].tool}
+                <Check className="size-2.5 text-green" strokeWidth={3} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </Upright>
       </Stage>
     </div>
   );

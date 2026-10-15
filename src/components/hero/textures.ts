@@ -350,29 +350,3 @@ export function drawTile(spec: TileSpec, p: Palette, f: Fonts) {
   tex.rotation = Math.PI / 2;
   return tex;
 }
-
-/* ------------------------------------------------------------ agent label */
-
-export const LABEL_W = 2.4;
-export const LABEL_H = 0.5;
-
-export function drawLabel(text: string, p: Palette, f: Fonts) {
-  const W = LABEL_W * 200;
-  const H = LABEL_H * 200;
-  const c = document.createElement("canvas");
-  c.width = W;
-  c.height = H;
-  const ctx = c.getContext("2d")!;
-  rr(ctx, 2, 2, W - 4, H - 4, (H - 4) / 2);
-  ctx.fillStyle = p.ink;
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(46, H / 2, 10, 0, Math.PI * 2);
-  ctx.fillStyle = p.green;
-  ctx.fill();
-  ctx.fillStyle = p.card;
-  ctx.font = `600 40px ${f.mono}`;
-  ctx.textBaseline = "middle";
-  ctx.fillText(text, 72, H / 2 + 2);
-  return makeTexture(c);
-}

@@ -1,12 +1,10 @@
-import { SpotflowLogo, SpotflowMark } from "@/components/brand/logo";
-import { FrameNodes } from "@/components/ui/doodles";
+import { SpotflowLogo } from "@/components/brand/logo";
 import { site } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="frame hairline-t relative overflow-hidden">
-      <FrameNodes />
-      <div className="relative z-10 flex flex-col gap-10 px-5 py-14 md:flex-row md:items-start md:justify-between md:px-12">
+    <footer className="frame px-5 pb-10 pt-24 md:px-10 md:pt-32">
+      <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
         <div className="max-w-sm">
           <SpotflowLogo className="h-[22px] w-auto text-ink" />
           <p className="mt-4 text-[14px] leading-relaxed text-muted">
@@ -25,15 +23,10 @@ export function Footer() {
         </nav>
       </div>
 
-      <div className="hairline-t relative z-10 flex items-center justify-between px-5 py-5 font-mono text-[12px] text-faint md:px-12">
+      <div className="mt-16 flex items-center justify-between border-t border-line pt-6 font-mono text-[12px] text-faint">
         <span>© 2026 Spotflow</span>
         <span>Registrations end October 30th</span>
       </div>
-
-      <SpotflowMark
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-28 left-1/2 hidden h-[280px] w-auto -translate-x-1/2 text-line lg:block"
-      />
     </footer>
   );
 }

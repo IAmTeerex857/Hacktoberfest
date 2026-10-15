@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import type { ReactNode } from "react";
 import { SectionHeader } from "@/components/ui/section-header";
-import { Asterisk, Brackets, Crosshair, FrameNodes, WireCube } from "@/components/ui/doodles";
+import { Asterisk, Brackets, Crosshair, WireCube } from "@/components/ui/doodles";
 import { AgentsScene, DocsScene, SkillsScene } from "./track-scenes";
 
 const tracks: { id: string; title: string; body: ReactNode; scene: ReactNode; tag: string }[] = [
@@ -38,35 +38,32 @@ const tracks: { id: string; title: string; body: ReactNode; scene: ReactNode; ta
 
 export function Tracks() {
   return (
-    <section id="tracks" className="frame hairline-t relative scroll-mt-16">
-      <FrameNodes />
-      <Crosshair className="right-6 top-8 hidden md:block" />
-      <WireCube className="right-[14%] top-14 hidden lg:block" size={48} />
-      <Brackets label="{ tracks: 3 }" className="right-[26%] top-24 hidden text-[12px] lg:block" />
-      <Asterisk className="left-[46%] top-12 hidden lg:block" size={16} />
+    <section id="tracks" className="frame relative scroll-mt-16 px-5 py-24 md:px-10 md:py-32">
+      <Crosshair className="right-4 top-24 hidden md:block" />
+      <WireCube className="right-[16%] top-32 hidden lg:block" size={48} />
+      <Brackets label="{ tracks: 3 }" className="right-[30%] top-44 hidden text-[12px] lg:block" />
+      <Asterisk className="left-[52%] top-28 hidden lg:block" size={16} />
 
-      <div className="px-5 pb-12 pt-20 md:px-12 md:pb-16 md:pt-28">
-        <SectionHeader index="01" eyebrow="Tracks" title="Three ways to build">
-          Choose your track when you sign up.
-        </SectionHeader>
-      </div>
+      <SectionHeader index="01" eyebrow="Tracks" title="Three ways to build">
+        Choose your track when you sign up.
+      </SectionHeader>
 
-      <div className="hairline-t grid md:grid-cols-3">
+      <div className="mt-14 grid gap-5 md:mt-20 md:grid-cols-3">
         {tracks.map((t, i) => (
           <motion.article
             key={t.id}
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className={`group relative flex flex-col border-line ${i < 2 ? "border-b md:border-b-0 md:border-r" : ""}`}
+            transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col overflow-hidden rounded-3xl border border-line bg-surface"
           >
-            <div className="flex flex-col gap-3 px-6 pt-8 md:px-8">
+            <div className="flex flex-col gap-3 px-7 pt-8">
               <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint">{t.tag}</span>
               <h3 className="text-[22px] font-semibold tracking-[-0.02em] text-ink">{t.title}</h3>
               <p className="text-[15px] leading-relaxed text-muted">{t.body}</p>
             </div>
-            <div className="mt-auto overflow-hidden pb-6 pt-2">{t.scene}</div>
+            <div className="mt-auto pb-8 pt-6">{t.scene}</div>
           </motion.article>
         ))}
       </div>

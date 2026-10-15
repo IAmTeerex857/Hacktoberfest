@@ -28,9 +28,9 @@ export function Nav() {
         scrolled ? "border-b border-line bg-bg/80 backdrop-blur-md" : "border-b border-transparent"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-5 md:px-8">
+      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-5 md:px-10">
         <div className="flex items-center gap-8">
-          <a href="#top" aria-label="Spotflow — back to top" className="text-ink">
+          <a href="#top" aria-label="Spotflow, back to top" className="text-ink">
             <SpotflowLogo className="h-[22px] w-auto" />
           </a>
           <nav aria-label="Sections" className="hidden items-center gap-6 md:flex">
