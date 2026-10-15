@@ -94,7 +94,7 @@ export function BuilderPass() {
               {/* header */}
               <div className="flex items-center justify-between px-6 pt-6">
                 <SpotflowLogo className="h-[18px] w-auto text-ink" />
-                <span className="rounded-full bg-blue px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-white">
+                <span className="rounded-full bg-violet px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-white">
                   Builder pass
                 </span>
               </div>
@@ -148,7 +148,7 @@ export function BuilderPass() {
         <label htmlFor={inputId} className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
           Preview your pass
         </label>
-        <div className="mt-2 flex h-11 items-center rounded-full border border-line bg-surface pl-4 pr-2 transition-colors focus-within:border-blue">
+        <div className="mt-2 flex h-11 items-center rounded-full border border-line bg-surface pl-4 pr-2 transition-colors focus-within:border-violet">
           <span className="font-mono text-sm text-faint">@</span>
           <input
             id={inputId}

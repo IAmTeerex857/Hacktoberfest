@@ -24,7 +24,7 @@ const sizes: Record<Size, string> = {
 };
 
 const base =
-  "relative inline-flex select-none items-center justify-center rounded-full font-medium tracking-tight cursor-pointer transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
+  "relative inline-flex select-none items-center justify-center rounded-full font-medium tracking-tight cursor-pointer transition-colors duration-150 outline-none focus-visible:ring-2 focus-visible:ring-violet focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
 
 /**
  * Optional leading icon slides out, trailing arrow slides in on hover. When it links
@@ -186,7 +186,7 @@ export function SparkleButton({
                 animate={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}
                 exit={{ opacity: 0, scale: 0, rotate: 45, y: 10 }}
                 transition={{ ...spring, delay: 0.05 }}
-                className="absolute -right-2 -top-3 size-2.5 text-blue"
+                className="absolute -right-2 -top-3 size-2.5 text-violet"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >

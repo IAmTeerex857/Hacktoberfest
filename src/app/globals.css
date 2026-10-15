@@ -19,6 +19,7 @@
 
   --blue: #2d5bff;
   --violet: #8b6cf6;
+  --violet-soft: #efeafe;
   --blue-ink: #1d3fd1;
   --blue-soft: #e8eeff;
   --green: #0f9f5c;
@@ -54,6 +55,7 @@
 
   --blue: #4c74ff;
   --violet: #a78bfa;
+  --violet-soft: #1e1838;
   --blue-ink: #8ea6ff;
   --blue-soft: #121a38;
   --green: #2fd580;
@@ -87,6 +89,7 @@
   --color-faint: var(--faint);
   --color-blue: var(--blue);
   --color-violet: var(--violet);
+  --color-violet-soft: var(--violet-soft);
   --color-blue-ink: var(--blue-ink);
   --color-blue-soft: var(--blue-soft);
   --color-green: var(--green);

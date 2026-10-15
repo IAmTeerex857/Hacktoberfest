@@ -18,7 +18,7 @@ function Row({ hidden = false }: { hidden?: boolean }) {
       {items.map((t, i) => (
         <li key={t} className="flex items-center">
           <span className="whitespace-nowrap px-6 text-[15px] font-medium text-ink-2">{t}</span>
-          <span className="font-mono text-[12px] text-blue">{marks[i % marks.length]}</span>
+          <span className="font-mono text-[12px] text-violet">{marks[i % marks.length]}</span>
         </li>
       ))}
     </ul>

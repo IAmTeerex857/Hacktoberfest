@@ -61,7 +61,7 @@ export function Register() {
             </span>
           </div>
 
-          <p className="mt-10 max-w-[520px] border-l-2 border-blue pl-4 text-[15px] leading-relaxed text-muted">
+          <p className="mt-10 max-w-[520px] border-l-2 border-violet pl-4 text-[15px] leading-relaxed text-muted">
             One signup. Choose your track and indicate your interest in the Lagos hackathon. Physical attendance is
             subject to selection. Lots of swag and prizes to be won.
           </p>

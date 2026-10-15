@@ -3,7 +3,7 @@ import { site } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="frame px-5 pb-10 pt-17 md:px-10 md:pt-23">
+    <footer className="frame overflow-hidden px-5 pt-17 md:px-10 md:pt-23">
       <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
         <div className="max-w-sm">
           <SpotflowLogo className="h-[22px] w-auto text-ink" />
@@ -26,6 +26,22 @@ export function Footer() {
       <div className="mt-16 flex items-center justify-between border-t border-line pt-6 font-mono text-[12px] text-faint">
         <span>© 2026 Spotflow</span>
         <span>Registrations end October 30th</span>
+      </div>
+
+      {/* Oversized wordmark that runs off the bottom of the page, fading into the background. */}
+      <div
+        aria-hidden="true"
+        className="mt-12 h-[0.74em] select-none overflow-hidden text-center text-[clamp(3.4rem,14.6vw,11.4rem)] font-semibold leading-none tracking-[-0.055em]"
+      >
+        <span
+          className="inline-block bg-clip-text text-transparent"
+          style={{
+            backgroundImage:
+              "linear-gradient(180deg, color-mix(in oklab, var(--ink) 34%, var(--bg)) 0%, color-mix(in oklab, var(--ink) 6%, var(--bg)) 75%)",
+          }}
+        >
+          Hacktoberfest
+        </span>
       </div>
     </footer>
   );

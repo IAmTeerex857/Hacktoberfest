@@ -90,12 +90,12 @@ export function HowItWorks() {
                   animate={{ rotate: active && landed && !reduced ? [0, 2.4 * dir, -1.5 * dir, 0.6 * dir, 0] : 0 }}
                   transition={{ duration: 1.3, ease: [0.45, 0, 0.25, 1], times: [0, 0.25, 0.55, 0.8, 1] }}
                   className={`group flex w-full origin-center gap-5 rounded-2xl border px-6 py-5 text-left transition-colors duration-500 ${
-                    active ? "border-blue bg-surface" : "border-line bg-surface-2 hover:bg-surface"
+                    active ? "border-violet bg-surface" : "border-line bg-surface-2 hover:bg-surface"
                   }`}
                 >
                   <span
                     className={`mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg font-mono text-[12px] font-semibold transition-colors duration-500 ${
-                      active ? "bg-blue text-white" : "bg-line text-muted"
+                      active ? "bg-violet text-white" : "bg-line text-muted"
                     }`}
                   >
                     {i + 1}

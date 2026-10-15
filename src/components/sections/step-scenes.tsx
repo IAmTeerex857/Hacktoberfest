@@ -65,7 +65,7 @@ export function SignUpScene() {
         </AnimatePresence>
         <span className="font-mono text-[13px] text-ink">
           {HANDLE.slice(0, typed)}
-          {typed < HANDLE.length && <span className="ml-px inline-block h-3.5 w-[2px] translate-y-0.5 bg-blue" />}
+          {typed < HANDLE.length && <span className="ml-px inline-block h-3.5 w-[2px] translate-y-0.5 bg-violet" />}
         </span>
       </div>
 
@@ -153,7 +153,7 @@ export function BuildScene() {
         <motion.path
           d="M60 96 C80 96 80 44 104 44 H250"
           fill="none"
-          stroke="var(--blue)"
+          stroke="var(--violet)"
           strokeWidth={3}
           strokeLinecap="round"
           initial={{ pathLength: 0 }}
@@ -179,7 +179,7 @@ export function BuildScene() {
               cy={44}
               r={7}
               fill="var(--surface)"
-              stroke="var(--blue)"
+              stroke="var(--violet)"
               strokeWidth={3}
               initial={{ scale: 0 }}
               animate={{ scale: stage >= 3 + i ? 1 : 0 }}
@@ -298,7 +298,7 @@ export function SelectScene() {
                       initial={{ scale: 2, opacity: 0, rotate: -24 }}
                       animate={{ scale: 1, opacity: 1, rotate: -10 }}
                       transition={{ type: "spring", stiffness: 700, damping: 20 }}
-                      className="absolute right-3 top-3 rounded-md border-2 border-blue px-2 py-0.5 font-mono text-[11px] font-bold uppercase tracking-[0.12em] text-blue"
+                      className="absolute right-3 top-3 rounded-md border-2 border-violet px-2 py-0.5 font-mono text-[11px] font-bold uppercase tracking-[0.12em] text-violet"
                     >
                       Selected
                     </motion.span>
@@ -322,7 +322,7 @@ export function SelectScene() {
             <span
               key={i}
               className="h-3 rounded-[3px] transition-colors duration-200"
-              style={{ background: i < filled ? "var(--blue)" : "var(--line)" }}
+              style={{ background: i < filled ? "var(--violet)" : "var(--line)" }}
             />
           ))}
         </div>
@@ -353,7 +353,7 @@ export function LagosScene() {
             transition={{ type: "spring", stiffness: 380, damping: 14 }}
             className="w-[108px] overflow-hidden rounded-2xl border border-line bg-surface text-center"
           >
-            <div className={`py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-white ${i ? "bg-green" : "bg-blue"}`}>
+            <div className={`py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-white ${i ? "bg-green" : "bg-violet"}`}>
               {d.day} · Nov
             </div>
             <div className="py-2 text-[40px] font-semibold leading-none tracking-[-0.04em] text-ink">{d.date}</div>
@@ -367,7 +367,7 @@ export function LagosScene() {
           initial={{ y: -36, opacity: 0 }}
           animate={stage >= 3 ? { y: 0, opacity: 1 } : {}}
           transition={{ type: "spring", stiffness: 600, damping: 12 }}
-          className="flex size-7 items-center justify-center rounded-full bg-blue text-white"
+          className="flex size-7 items-center justify-center rounded-full bg-violet text-white"
         >
           <MapPin className="size-4" />
         </motion.span>

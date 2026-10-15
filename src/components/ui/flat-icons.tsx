@@ -4,10 +4,10 @@ const tile = "flex size-11 shrink-0 items-center justify-center rounded-xl";
 
 export function PinIcon() {
   return (
-    <span className={`${tile} bg-blue-soft`} aria-hidden="true">
+    <span className={`${tile} bg-violet-soft`} aria-hidden="true">
       <svg viewBox="0 0 24 24" width={24} height={24}>
-        <ellipse cx="12" cy="20.5" rx="5" ry="1.5" fill="var(--blue)" opacity={0.25} />
-        <path d="M12 2a7 7 0 0 0-7 7c0 5 7 11 7 11s7-6 7-11a7 7 0 0 0-7-7z" fill="var(--blue)" />
+        <ellipse cx="12" cy="20.5" rx="5" ry="1.5" fill="var(--violet)" opacity={0.25} />
+        <path d="M12 2a7 7 0 0 0-7 7c0 5 7 11 7 11s7-6 7-11a7 7 0 0 0-7-7z" fill="var(--violet)" />
         <circle cx="12" cy="9" r="2.6" fill="#fff" />
       </svg>
     </span>
