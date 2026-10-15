@@ -1,0 +1,195 @@
+@import "tailwindcss";
+@import "generative-loaders/styles.css";
+@import "blobatar/motion.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------- tokens ---------- */
+:root {
+  --bg: #f6f6f7;
+  --bg-sunken: #efeff1;
+  --surface: #ffffff;
+  --surface-2: #fafafb;
+  --line: #e4e4e8;
+  --line-strong: #d4d4da;
+  --ink: #0b0b0d;
+  --ink-2: #3a3a42;
+  --muted: #6b6b76;
+  --faint: #a1a1aa;
+
+  --blue: #2d5bff;
+  --blue-ink: #1d3fd1;
+  --blue-soft: #e8eeff;
+  --green: #0f9f5c;
+  --green-ink: #0a7a46;
+  --green-soft: #e3f6ec;
+  --amber: #c98a12;
+
+  /* isometric face shading (top / left side / right side) */
+  --iso-top: #ffffff;
+  --iso-left: #e9e9ee;
+  --iso-right: #dcdce3;
+  --iso-edge: #d4d4da;
+
+  --term: #0e0e11;
+  --term-edge: #0e0e11;
+
+  --doodle: #b9b9c2;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #08080a;
+  --bg-sunken: #0c0c0f;
+  --surface: #111114;
+  --surface-2: #0e0e11;
+  --line: #1f1f25;
+  --line-strong: #2c2c34;
+  --ink: #ededf0;
+  --ink-2: #c4c4cc;
+  --muted: #8a8a96;
+  --faint: #55555f;
+
+  --blue: #4c74ff;
+  --blue-ink: #8ea6ff;
+  --blue-soft: #121a38;
+  --green: #2fd580;
+  --green-ink: #5fe3a0;
+  --green-soft: #0c2219;
+  --amber: #e8b04a;
+
+  --iso-top: #18181d;
+  --iso-left: #111115;
+  --iso-right: #0c0c0f;
+  --iso-edge: #2c2c34;
+
+  --term: #1a1a20;
+  --term-edge: #2c2c34;
+
+  --doodle: #34343d;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-sunken: var(--bg-sunken);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-blue: var(--blue);
+  --color-blue-ink: var(--blue-ink);
+  --color-blue-soft: var(--blue-soft);
+  --color-green: var(--green);
+  --color-green-ink: var(--green-ink);
+  --color-green-soft: var(--green-soft);
+  --color-amber: var(--amber);
+  --color-doodle: var(--doodle);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  background: var(--bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--blue);
+  color: #fff;
+}
+
+/* ---------- structural frame (vertical rails + crosshair nodes) ---------- */
+.frame {
+  position: relative;
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1200px;
+  border-inline: 1px solid var(--line);
+}
+
+.hairline-t {
+  border-top: 1px solid var(--line);
+}
+
+.node {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--line-strong);
+  background: var(--bg);
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.dot-grid {
+  background-image: radial-gradient(var(--line-strong) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.hatch {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--line) 0 1px,
+    transparent 1px 7px
+  );
+}
+
+/* ---------- isometric CSS 3D primitives ---------- */
+.iso-stage {
+  transform-style: preserve-3d;
+  transform: rotateX(57deg) rotateZ(45deg);
+}
+
+.iso-stage *,
+.iso-3d {
+  transform-style: preserve-3d;
+}
+
+.iso-face {
+  position: absolute;
+  backface-visibility: visible;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee {
+  animation: marquee 40s linear infinite;
+}
+
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+.dash-flow {
+  animation: dash-flow 1.2s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .marquee,
+  .dash-flow {
+    animation: none;
+  }
+}
