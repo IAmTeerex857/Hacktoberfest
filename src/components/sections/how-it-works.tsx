@@ -26,7 +26,7 @@ const steps = [
 ];
 
 const SCENES = [SignUpScene, BuildScene, SelectScene, LagosScene];
-const STEP_MS = 3000;
+const STEP_MS = 5000;
 // Blocks land bottom-up, one on top of the other, before the steps start cycling.
 const DROP_GAP = 0.22;
 const LANDED_MS = 1500;

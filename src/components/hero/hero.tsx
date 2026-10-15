@@ -77,17 +77,9 @@ export function Hero() {
       id="top"
       className="relative isolate flex flex-col overflow-hidden md:block md:h-[clamp(660px,calc(100svh-4rem),900px)]"
     >
-      {/* 3D scene: bleeds a little past the content column and fades out at the edges */}
+      {/* 3D scene: bleeds a little past the content column */}
       <div
         className="pointer-events-none relative order-last h-[420px] md:absolute md:inset-y-0 md:left-1/2 md:h-auto md:w-full md:max-w-[1400px] md:-translate-x-1/2"
-        style={{
-          maskImage:
-            "linear-gradient(90deg, transparent, #000 7%, #000 97.5%, transparent), linear-gradient(180deg, transparent, #000 2%, #000 94.5%, transparent)",
-          WebkitMaskImage:
-            "linear-gradient(90deg, transparent, #000 7%, #000 97.5%, transparent), linear-gradient(180deg, transparent, #000 2%, #000 94.5%, transparent)",
-          maskComposite: "intersect",
-          WebkitMaskComposite: "source-in",
-        }}
         aria-hidden="true"
       >
         <div ref={sceneRef} className="h-full w-full">
