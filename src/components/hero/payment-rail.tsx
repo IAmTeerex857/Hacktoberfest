@@ -94,9 +94,9 @@ function Rig({ compact }: { compact: boolean }) {
     const { camera } = get();
     const zoom = compact
       ? Math.min(size.width / 7.5, size.height / 6, 72)
-      : Math.min(size.width / 15, size.height / 7.8, 100);
+      : Math.min(size.width / 12, size.height / 7.8, 100);
     // Where the station (world origin) should sit on screen, as a fraction of the canvas.
-    const fx = compact ? 0.5 : 0.7;
+    const fx = compact ? 0.5 : 0.74;
     const fy = compact ? 0.8 : 0.8;
     const dx = ((fx - 0.5) * size.width) / zoom;
     const dy = ((fy - 0.5) * size.height) / zoom;
