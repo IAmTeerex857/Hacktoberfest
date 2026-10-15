@@ -22,9 +22,9 @@ export type Palette = {
 
 export const palettes: Record<"light" | "dark", Palette> = {
   light: {
-    rail: "#111114",
-    railEdge: "#3a3a42",
-    railLane: "#5a5a64",
+    rail: "#8b6cf6",
+    railEdge: "#b4a0fa",
+    railLane: "#cdbffc",
     card: "#ffffff",
     cardEdge: "#dedee4",
     ink: "#0b0b0d",

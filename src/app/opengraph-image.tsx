@@ -10,7 +10,7 @@ export const contentType = "image/png";
 
 const INK = "#0b0b0d";
 const BLUE = "#2d5bff";
-const RAIL = "#111114";
+const VIOLET = "#8b6cf6";
 const GREEN = "#0f9f5c";
 const MUTED = "#6b6b76";
 const LINE = "#e4e4e8";
@@ -90,7 +90,7 @@ export default async function OpengraphImage() {
             top: 540,
             width: 1100,
             height: 150,
-            background: RAIL,
+            background: VIOLET,
             transform: "rotate(-14deg)",
             display: "flex",
           }}
@@ -143,7 +143,7 @@ export default async function OpengraphImage() {
           </div>
           <div style={{ display: "flex", flexDirection: "column", marginTop: 16, fontSize: 84, fontWeight: 600, lineHeight: 1, letterSpacing: -3.5, color: INK }}>
             <span>Build the next</span>
-            <span style={{ color: BLUE }}>payment workflow.</span>
+            <span style={{ color: VIOLET }}>payment workflow.</span>
           </div>
           <div style={{ display: "flex", gap: 14, marginTop: 40 }}>
             {["Online + Lagos", site.eventDatesShort, "Register by Oct 30"].map((t) => (

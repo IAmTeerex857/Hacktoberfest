@@ -121,7 +121,7 @@ export function Hero() {
                   return (
                     <span key={w} className="inline-block overflow-hidden pb-[0.08em] align-bottom">
                       <motion.span
-                        className={`inline-block ${li === 1 ? "text-blue" : ""}`}
+                        className={`inline-block ${li === 1 ? "text-violet" : ""}`}
                         variants={rise}
                         initial="hidden"
                         animate="shown"
