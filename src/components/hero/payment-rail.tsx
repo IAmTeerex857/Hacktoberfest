@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { RoundedBox } from "@react-three/drei";
+import { Grid, RoundedBox } from "@react-three/drei";
 import {
   Color,
   Group,
@@ -94,10 +94,10 @@ function Rig({ compact }: { compact: boolean }) {
     const { camera } = get();
     const zoom = compact
       ? Math.min(size.width / 7.5, size.height / 6, 72)
-      : Math.min(size.width / 12, size.height / 7.8, 112);
+      : Math.min(size.width / 15, size.height / 7.8, 100);
     // Where the station (world origin) should sit on screen, as a fraction of the canvas.
-    const fx = compact ? 0.5 : 0.76;
-    const fy = compact ? 0.8 : 0.84;
+    const fx = compact ? 0.5 : 0.7;
+    const fy = compact ? 0.8 : 0.8;
     const dx = ((fx - 0.5) * size.width) / zoom;
     const dy = ((fy - 0.5) * size.height) / zoom;
     const target = new Vector3().addScaledVector(RIGHT, -dx).addScaledVector(UP, dy);
@@ -158,6 +158,21 @@ function Rail({ p }: { p: Palette }) {
 
   return (
     <group>
+      {/* ground grid the scene rises out of */}
+      <Grid
+        position={[0, -0.52, 0]}
+        args={[60, 60]}
+        cellSize={1}
+        sectionSize={4}
+        cellThickness={0.6}
+        sectionThickness={1}
+        cellColor={p.line}
+        sectionColor={p.cardEdge}
+        fadeDistance={11}
+        fadeStrength={1.6}
+        fadeFrom={0}
+        infiniteGrid
+      />
       {/* bed */}
       <mesh position={[0, -0.25, 0]} receiveShadow>
         <boxGeometry args={[4.6, 0.5, LEN]} />

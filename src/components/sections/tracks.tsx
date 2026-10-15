@@ -38,7 +38,7 @@ const tracks: { id: string; title: string; body: ReactNode; scene: ReactNode; ta
 
 export function Tracks() {
   return (
-    <section id="tracks" className="frame relative scroll-mt-16 px-5 py-19 md:px-10 md:py-26">
+    <section id="tracks" className="frame relative scroll-mt-16 px-5 py-17 md:px-10 md:py-23">
       <Crosshair className="right-4 top-24 hidden md:block" />
       <WireCube className="right-[16%] top-32 hidden lg:block" size={48} />
       <Brackets label="{ tracks: 3 }" className="right-[30%] top-44 hidden text-[12px] lg:block" />

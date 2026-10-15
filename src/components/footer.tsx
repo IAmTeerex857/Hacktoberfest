@@ -3,7 +3,7 @@ import { site } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="frame px-5 pb-10 pt-19 md:px-10 md:pt-26">
+    <footer className="frame px-5 pb-10 pt-17 md:px-10 md:pt-23">
       <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
         <div className="max-w-sm">
           <SpotflowLogo className="h-[22px] w-auto text-ink" />

@@ -77,19 +77,28 @@ export function Hero() {
       id="top"
       className="relative isolate flex flex-col overflow-hidden md:block md:h-[clamp(660px,calc(100svh-4rem),900px)]"
     >
-      {/* 3D scene: sits inside the content column on desktop, its own block on mobile */}
-      <div className="pointer-events-none order-last px-5 md:absolute md:inset-0 md:px-0" aria-hidden="true">
-        <div className="frame h-[420px] md:h-full md:px-10">
-          <div ref={sceneRef} className="relative h-full w-full overflow-hidden">
-            {mounted && (
-              <PaymentRail
-                theme={resolvedTheme === "dark" ? "dark" : "light"}
-                compact={compact}
-                reduced={reduced}
-                active={inView}
-              />
-            )}
-          </div>
+      {/* 3D scene: bleeds a little past the content column and fades out at the edges */}
+      <div
+        className="pointer-events-none relative order-last h-[420px] md:absolute md:inset-y-0 md:left-1/2 md:h-auto md:w-full md:max-w-[1400px] md:-translate-x-1/2"
+        style={{
+          maskImage:
+            "linear-gradient(90deg, transparent 4%, #000 40%, #000 88%, transparent), linear-gradient(180deg, transparent, #000 10%, #000 72%, transparent)",
+          WebkitMaskImage:
+            "linear-gradient(90deg, transparent 4%, #000 40%, #000 88%, transparent), linear-gradient(180deg, transparent, #000 10%, #000 72%, transparent)",
+          maskComposite: "intersect",
+          WebkitMaskComposite: "source-in",
+        }}
+        aria-hidden="true"
+      >
+        <div ref={sceneRef} className="h-full w-full">
+          {mounted && (
+            <PaymentRail
+              theme={resolvedTheme === "dark" ? "dark" : "light"}
+              compact={compact}
+              reduced={reduced}
+              active={inView}
+            />
+          )}
         </div>
       </div>
 

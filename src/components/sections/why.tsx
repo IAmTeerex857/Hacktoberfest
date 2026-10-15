@@ -15,7 +15,7 @@ const cells: { label: string; line: string; scene: ReactNode }[] = [
 
 export function Why() {
   return (
-    <section id="why" className="frame relative scroll-mt-16 px-5 py-19 md:px-10 md:py-26">
+    <section id="why" className="frame relative scroll-mt-16 px-5 py-17 md:px-10 md:py-23">
       <Crosshair className="right-4 top-24 hidden md:block" />
       <Brackets label="// why build" className="right-[14%] top-44 hidden text-[12px] lg:block" />
 

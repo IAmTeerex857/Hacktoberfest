@@ -18,7 +18,7 @@ const details = [
 
 export function Register() {
   return (
-    <section id="register" className="frame relative scroll-mt-16 px-5 py-19 md:px-10 md:py-26">
+    <section id="register" className="frame relative scroll-mt-16 px-5 py-17 md:px-10 md:py-23">
       <Plus className="right-4 top-24 hidden md:block" />
       <WireCube className="bottom-16 left-[46%] hidden lg:block" size={44} />
       <Asterisk className="bottom-24 right-[6%] hidden lg:block" size={18} />
@@ -61,7 +61,7 @@ export function Register() {
             </span>
           </div>
 
-          <p className="mt-10 max-w-[520px] border-l-2 border-blue pl-4 text-[14.5px] italic leading-relaxed text-muted">
+          <p className="mt-10 max-w-[520px] border-l-2 border-blue pl-4 text-[15px] leading-relaxed text-muted">
             One signup. Choose your track and indicate your interest in the Lagos hackathon. Physical attendance is
             subject to selection. Lots of swag and prizes to be won.
           </p>

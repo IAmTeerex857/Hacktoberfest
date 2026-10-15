@@ -217,9 +217,15 @@ const SWAG = [
     label: "Cap",
     svg: (
       <svg {...icon}>
-        <path d="M8 30a16 16 0 0 1 32 0z" fill="var(--ink)" />
-        <path d="M4 30h40a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z" fill="var(--blue)" />
-        <circle cx="24" cy="13" r="2.5" fill="var(--blue)" />
+        {/* crown */}
+        <path d="M5 32C5 19 12 11 22 11c9 0 15 7 15 17v4z" fill="var(--blue)" />
+        {/* panel seam + button */}
+        <path d="M22 12c-3 6-4 13-3 20" fill="none" stroke="#fff" strokeOpacity={0.35} strokeWidth={1.5} />
+        <circle cx="22" cy="11" r="2.2" fill="var(--ink)" />
+        {/* front patch */}
+        <circle cx="29" cy="22" r="3.5" fill="#fff" />
+        {/* brim */}
+        <path d="M30 29c6 0 13 1 16 4-2 3-9 3.5-16 3.5H5V32z" fill="var(--ink)" />
       </svg>
     ),
   },

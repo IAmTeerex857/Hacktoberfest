@@ -50,61 +50,67 @@ export function HowItWorks() {
   };
 
   return (
-    <section id="how-it-works" className="frame relative scroll-mt-16 px-5 py-19 md:px-10 md:py-26">
+    <section id="how-it-works" className="frame relative scroll-mt-16 px-5 py-17 md:px-10 md:py-23">
       <SectionHeader index="02" eyebrow="How it works" title="Start online. Finish in Lagos.">
         One signup gets you in. Build from anywhere, and you could be one of {site.builders} builders in the room.
       </SectionHeader>
 
       <div ref={wrap} className="mt-14 grid items-center gap-10 md:mt-20 lg:grid-cols-2 lg:gap-16">
-        <ol className="flex flex-col gap-2">
+        <ol className="flex flex-col gap-3.5">
           {steps.map((s, i) => {
             const active = i === step;
             return (
-              <li key={s.title} className="relative">
-                {active && (
-                  <motion.span
-                    layoutId="step-highlight"
-                    className="absolute inset-0 rounded-2xl border border-line bg-surface"
-                    transition={{ type: "spring", stiffness: 110, damping: 22 }}
-                  />
-                )}
-                <button
+              <motion.li
+                key={s.title}
+                // Staggered fall into place when the section arrives.
+                initial={reduced ? false : { y: -48, opacity: 0 }}
+                animate={inView || reduced ? { y: 0, opacity: 1 } : undefined}
+                transition={{ type: "spring", stiffness: 260, damping: 15, mass: 0.9, delay: i * 0.09 }}
+              >
+                <motion.button
                   type="button"
                   onClick={() => choose(i)}
                   aria-current={active ? "step" : undefined}
-                  className="group relative flex w-full gap-5 rounded-2xl px-6 py-5 text-left"
+                  // The active block lifts, then drops back and settles; the solid
+                  // offset underneath reads as the block's thickness.
+                  animate={
+                    active && !reduced
+                      ? { y: [-14, 0], boxShadow: "0 6px 0 0 var(--blue)" }
+                      : { y: 0, boxShadow: "0 3px 0 0 var(--line-strong)" }
+                  }
+                  transition={{
+                    y: { type: "spring", stiffness: 420, damping: 14, mass: 0.8 },
+                    boxShadow: { duration: 0.2 },
+                  }}
+                  className={`group flex w-full gap-5 rounded-2xl border px-6 py-5 text-left transition-colors duration-300 ${
+                    active ? "border-blue bg-surface" : "border-line bg-surface-2 hover:bg-surface"
+                  }`}
                 >
                   <span
-                    className={`mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full border font-mono text-[12px] transition-colors duration-500 ${
-                      active ? "border-ink bg-ink text-bg" : "border-line-strong text-muted"
+                    className={`mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg font-mono text-[12px] font-semibold transition-colors duration-300 ${
+                      active ? "bg-blue text-white" : "bg-line text-muted"
                     }`}
                   >
                     {i + 1}
                   </span>
-                  <span className="flex flex-col">
+                  <span className="flex flex-col gap-1.5">
                     <span
-                      className={`text-[18px] font-semibold tracking-[-0.01em] transition-colors duration-500 ${
-                        active ? "text-ink" : "text-muted group-hover:text-ink"
+                      className={`text-[17px] font-semibold tracking-[-0.01em] transition-colors duration-300 ${
+                        active ? "text-ink" : "text-ink-2"
                       }`}
                     >
                       {s.title}
                     </span>
-                    <AnimatePresence initial={false}>
-                      {active && (
-                        <motion.span
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.7, ease }}
-                          className="overflow-hidden"
-                        >
-                          <span className="block pt-2 text-[15px] leading-relaxed text-muted">{s.body}</span>
-                        </motion.span>
-                      )}
-                    </AnimatePresence>
+                    <span
+                      className={`text-[14.5px] leading-relaxed transition-colors duration-300 ${
+                        active ? "text-muted" : "text-faint"
+                      }`}
+                    >
+                      {s.body}
+                    </span>
                   </span>
-                </button>
-              </li>
+                </motion.button>
+              </motion.li>
             );
           })}
         </ol>
