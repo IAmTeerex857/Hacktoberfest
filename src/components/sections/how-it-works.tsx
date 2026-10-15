@@ -26,21 +26,32 @@ const steps = [
 ];
 
 const SCENES = [SignUpScene, BuildScene, SelectScene, LagosScene];
-const STEP_MS = 6500;
+const STEP_MS = 3000;
+// Blocks land bottom-up, one on top of the other, before the steps start cycling.
+const DROP_GAP = 0.22;
+const LANDED_MS = 1500;
 const ease = [0.22, 1, 0.36, 1] as [number, number, number, number];
 
 export function HowItWorks() {
   const [step, setStep] = useState(0);
   const [tick, setTick] = useState(0);
+  const [landed, setLanded] = useState(false);
   const wrap = useRef<HTMLDivElement>(null);
   const inView = useInView(wrap, { margin: "-20% 0px" });
+  const arrived = useInView(wrap, { once: true, margin: "-20% 0px" });
   const reduced = useReducedMotion();
 
   useEffect(() => {
-    if (!inView || reduced) return;
+    if (!arrived) return;
+    const id = setTimeout(() => setLanded(true), reduced ? 0 : LANDED_MS);
+    return () => clearTimeout(id);
+  }, [arrived, reduced]);
+
+  useEffect(() => {
+    if (!inView || !landed || reduced) return;
     const id = setTimeout(() => setStep((s) => (s + 1) % steps.length), STEP_MS);
     return () => clearTimeout(id);
-  }, [step, tick, inView, reduced]);
+  }, [step, tick, inView, landed, reduced]);
 
   const Scene = SCENES[step];
 
@@ -59,35 +70,31 @@ export function HowItWorks() {
         <ol className="flex flex-col gap-3.5">
           {steps.map((s, i) => {
             const active = i === step;
+            // Balance-scale settle: the active block dips on one side, then the
+            // other, before coming level. Alternates direction step to step.
+            const dir = i % 2 === 0 ? -1 : 1;
             return (
               <motion.li
                 key={s.title}
-                // Staggered fall into place when the section arrives.
-                initial={reduced ? false : { y: -48, opacity: 0 }}
-                animate={inView || reduced ? { y: 0, opacity: 1 } : undefined}
-                transition={{ type: "spring", stiffness: 260, damping: 15, mass: 0.9, delay: i * 0.09 }}
+                initial={reduced ? false : { y: -140, opacity: 0 }}
+                animate={arrived || reduced ? { y: 0, opacity: 1 } : undefined}
+                transition={{
+                  y: { type: "spring", stiffness: 170, damping: 19, mass: 1.1, delay: (steps.length - 1 - i) * DROP_GAP },
+                  opacity: { duration: 0.25, delay: (steps.length - 1 - i) * DROP_GAP },
+                }}
               >
                 <motion.button
                   type="button"
                   onClick={() => choose(i)}
                   aria-current={active ? "step" : undefined}
-                  // The active block lifts, then drops back and settles; the solid
-                  // offset underneath reads as the block's thickness.
-                  animate={
-                    active && !reduced
-                      ? { y: [-14, 0], boxShadow: "0 6px 0 0 var(--blue)" }
-                      : { y: 0, boxShadow: "0 3px 0 0 var(--line-strong)" }
-                  }
-                  transition={{
-                    y: { type: "spring", stiffness: 420, damping: 14, mass: 0.8 },
-                    boxShadow: { duration: 0.2 },
-                  }}
-                  className={`group flex w-full gap-5 rounded-2xl border px-6 py-5 text-left transition-colors duration-300 ${
+                  animate={{ rotate: active && landed && !reduced ? [0, 2.4 * dir, -1.5 * dir, 0.6 * dir, 0] : 0 }}
+                  transition={{ duration: 1.3, ease: [0.45, 0, 0.25, 1], times: [0, 0.25, 0.55, 0.8, 1] }}
+                  className={`group flex w-full origin-center gap-5 rounded-2xl border px-6 py-5 text-left transition-colors duration-500 ${
                     active ? "border-blue bg-surface" : "border-line bg-surface-2 hover:bg-surface"
                   }`}
                 >
                   <span
-                    className={`mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg font-mono text-[12px] font-semibold transition-colors duration-300 ${
+                    className={`mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg font-mono text-[12px] font-semibold transition-colors duration-500 ${
                       active ? "bg-blue text-white" : "bg-line text-muted"
                     }`}
                   >
@@ -95,14 +102,14 @@ export function HowItWorks() {
                   </span>
                   <span className="flex flex-col gap-1.5">
                     <span
-                      className={`text-[17px] font-semibold tracking-[-0.01em] transition-colors duration-300 ${
+                      className={`text-[17px] font-semibold tracking-[-0.01em] transition-colors duration-500 ${
                         active ? "text-ink" : "text-ink-2"
                       }`}
                     >
                       {s.title}
                     </span>
                     <span
-                      className={`text-[14.5px] leading-relaxed transition-colors duration-300 ${
+                      className={`text-[14.5px] leading-relaxed transition-colors duration-500 ${
                         active ? "text-muted" : "text-faint"
                       }`}
                     >

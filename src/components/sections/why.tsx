@@ -31,7 +31,7 @@ export function Why() {
         }
       />
 
-      <div className="mt-14 grid gap-5 md:mt-20 md:grid-cols-2">
+      <div className="mt-14 grid grid-cols-1 gap-5 md:mt-20 md:grid-cols-2">
         {cells.map((c, i) => (
           <motion.div
             key={c.label}
@@ -39,7 +39,7 @@ export function Why() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-10%" }}
             transition={{ duration: 0.7, delay: (i % 2) * 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col rounded-3xl border border-line bg-surface-2"
+            className="flex min-w-0 flex-col overflow-hidden rounded-3xl border border-line bg-surface-2"
           >
             <div className="flex min-h-[340px] flex-1 items-center justify-center px-6 pb-4 pt-12 md:px-12">{c.scene}</div>
             <div className="px-6 pb-10 text-center md:px-12">

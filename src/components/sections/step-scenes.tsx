@@ -38,8 +38,8 @@ const TRACKS = ["Agents", "Recipes", "Docs"];
 
 export function SignUpScene() {
   // typing (one mark per char), pick track, Lagos toggle, press, done
-  const typeMarks = HANDLE.split("").map((_, i) => 350 + i * 85);
-  const stage = useStage([...typeMarks, 1500, 2300, 3000, 3350]);
+  const typeMarks = HANDLE.split("").map((_, i) => 200 + i * 60);
+  const stage = useStage([...typeMarks, 950, 1450, 1950, 2200]);
   const typed = Math.min(stage, HANDLE.length);
   const after = stage - HANDLE.length;
   const track = after >= 1;
@@ -132,7 +132,7 @@ const COMMITS = [
 ];
 
 export function BuildScene() {
-  const stage = useStage([0, 500, 1100, 1600, 2100, 2700, 3100]);
+  const stage = useStage([0, 350, 750, 1050, 1350, 1700, 2000]);
   const days = Array.from({ length: 16 }, (_, i) => i);
 
   return (
@@ -254,7 +254,7 @@ const APPLICANTS = [
 const SEATS = site.builders;
 
 export function SelectScene() {
-  const stage = useStage([700, 1400, 2200]);
+  const stage = useStage([450, 950, 1550]);
   const peeled = Math.min(stage, 2);
   const stamped = stage >= 3;
   const [seats, setSeats] = useState(0);
@@ -262,7 +262,7 @@ export function SelectScene() {
 
   useEffect(() => {
     if (reduced) return;
-    const id = setInterval(() => setSeats((n) => (n >= SEATS ? n : n + 1)), 85);
+    const id = setInterval(() => setSeats((n) => (n >= SEATS ? n : n + 1)), 60);
     return () => clearInterval(id);
   }, [reduced]);
   const filled = reduced ? SEATS : seats;
@@ -340,7 +340,7 @@ const DAYS = [
 const CREW = ["ada.dev", "tobi", "zainab", "kelechi", "seun"];
 
 export function LagosScene() {
-  const stage = useStage([150, 450, 1100, 1700]);
+  const stage = useStage([100, 350, 850, 1300]);
 
   return (
     <div className="flex w-[320px] flex-col items-center gap-6">

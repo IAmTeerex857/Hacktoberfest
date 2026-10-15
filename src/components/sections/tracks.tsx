@@ -48,7 +48,7 @@ export function Tracks() {
         Choose your track when you sign up.
       </SectionHeader>
 
-      <div className="mt-14 grid gap-5 md:mt-20 md:grid-cols-3">
+      <div className="mt-14 grid grid-cols-1 gap-5 md:mt-20 md:grid-cols-3">
         {tracks.map((t, i) => (
           <motion.article
             key={t.id}

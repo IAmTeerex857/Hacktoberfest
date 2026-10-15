@@ -82,9 +82,9 @@ export function Hero() {
         className="pointer-events-none relative order-last h-[420px] md:absolute md:inset-y-0 md:left-1/2 md:h-auto md:w-full md:max-w-[1400px] md:-translate-x-1/2"
         style={{
           maskImage:
-            "linear-gradient(90deg, transparent 4%, #000 40%, #000 88%, transparent), linear-gradient(180deg, transparent, #000 10%, #000 72%, transparent)",
+            "linear-gradient(90deg, transparent, #000 7%, #000 97.5%, transparent), linear-gradient(180deg, transparent, #000 2%, #000 94.5%, transparent)",
           WebkitMaskImage:
-            "linear-gradient(90deg, transparent 4%, #000 40%, #000 88%, transparent), linear-gradient(180deg, transparent, #000 10%, #000 72%, transparent)",
+            "linear-gradient(90deg, transparent, #000 7%, #000 97.5%, transparent), linear-gradient(180deg, transparent, #000 2%, #000 94.5%, transparent)",
           maskComposite: "intersect",
           WebkitMaskComposite: "source-in",
         }}
