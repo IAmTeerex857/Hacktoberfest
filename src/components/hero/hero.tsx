@@ -77,20 +77,20 @@ export function Hero() {
       id="top"
       className="relative isolate flex flex-col overflow-hidden md:block md:h-[clamp(660px,calc(100svh-4rem),900px)]"
     >
-      {/* 3D scene: full-bleed behind the copy on desktop, its own block on mobile */}
-      <div
-        ref={sceneRef}
-        className="pointer-events-none relative order-last h-[420px] w-full md:absolute md:inset-0 md:h-auto"
-        aria-hidden="true"
-      >
-        {mounted && (
-          <PaymentRail
-            theme={resolvedTheme === "dark" ? "dark" : "light"}
-            compact={compact}
-            reduced={reduced}
-            active={inView}
-          />
-        )}
+      {/* 3D scene: sits inside the content column on desktop, its own block on mobile */}
+      <div className="pointer-events-none order-last px-5 md:absolute md:inset-0 md:px-0" aria-hidden="true">
+        <div className="frame h-[420px] md:h-full md:px-10">
+          <div ref={sceneRef} className="relative h-full w-full overflow-hidden">
+            {mounted && (
+              <PaymentRail
+                theme={resolvedTheme === "dark" ? "dark" : "light"}
+                compact={compact}
+                reduced={reduced}
+                active={inView}
+              />
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="frame relative z-10 px-5 pb-8 pt-16 md:px-10 md:pb-24 md:pt-24">

@@ -18,7 +18,7 @@ const details = [
 
 export function Register() {
   return (
-    <section id="register" className="frame relative scroll-mt-16 px-5 py-24 md:px-10 md:py-32">
+    <section id="register" className="frame relative scroll-mt-16 px-5 py-19 md:px-10 md:py-26">
       <Plus className="right-4 top-24 hidden md:block" />
       <WireCube className="bottom-16 left-[46%] hidden lg:block" size={44} />
       <Asterisk className="bottom-24 right-[6%] hidden lg:block" size={18} />

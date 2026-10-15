@@ -92,13 +92,11 @@ function Rig({ compact }: { compact: boolean }) {
 
   useLayoutEffect(() => {
     const { camera } = get();
-    // The canvas is full-bleed; anchor the docked card to the 1200px content column.
-    const column = Math.min(size.width, 1200);
     const zoom = compact
       ? Math.min(size.width / 7.5, size.height / 6, 72)
-      : Math.min(column / 12.5, size.height / 7.8, 112);
+      : Math.min(size.width / 12, size.height / 7.8, 112);
     // Where the station (world origin) should sit on screen, as a fraction of the canvas.
-    const fx = compact ? 0.5 : ((size.width - column) / 2 + column * 0.78) / size.width;
+    const fx = compact ? 0.5 : 0.76;
     const fy = compact ? 0.8 : 0.84;
     const dx = ((fx - 0.5) * size.width) / zoom;
     const dy = ((fy - 0.5) * size.height) / zoom;
@@ -274,9 +272,9 @@ function Conveyor({ tex, p, clock }: { tex: Textures; p: Palette; clock: React.R
 // Tiles are placed in screen space relative to the docked card (right, up,
 // depth along the view axis), so they never drift under the copy or off-frame.
 const TILE_SCREEN: [number, number, number][] = [
-  [2.2, 3.1, -2],
-  [1.5, 5.7, -3],
-  [-0.7, 4.3, -4],
+  [1.9, 4.1, -2],
+  [0.6, 6.1, -3],
+  [-1.3, 4.5, -4],
 ];
 const TILE_POS = TILE_SCREEN.map(([r, u, d]) =>
   new Vector3().addScaledVector(RIGHT, r).addScaledVector(UP, u).addScaledVector(VIEW, d).toArray(),

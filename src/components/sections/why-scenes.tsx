@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useAnimationFrame, useInView, useReducedMotion } from "motion/react";
 import { Check, GitMerge, Search } from "lucide-react";
 import { Blobatar } from "@blobatar/react";
 import { InlineLoader, TextLoader } from "generative-loaders";
-import { Slab, Stage, Upright } from "@/components/iso/iso";
 
 function useLive(ms: number) {
   const ref = useRef<HTMLDivElement>(null);
@@ -189,129 +188,140 @@ export function DocsAnswerScene() {
 
 /* ------------------------------------------------------ swag & prizes */
 
-// Flat, two-tone icons that stand upright in the iso scene.
+// Flat two-tone icons, drawn at the size they render so they stay crisp.
 function Trophy() {
   return (
-    <svg viewBox="0 0 48 48" width={46} height={46} aria-hidden="true">
-      <path d="M10 10H5v5a8 8 0 0 0 8 8M38 10h5v5a8 8 0 0 1-8 8" fill="none" stroke="#d9961a" strokeWidth={3.5} />
+    <svg viewBox="0 0 48 48" width={88} height={88} aria-hidden="true">
+      <path d="M11 10H5v5a8 8 0 0 0 8 8M37 10h6v5a8 8 0 0 1-8 8" fill="none" stroke="#d9961a" strokeWidth={3.5} />
       <path d="M12 6h24v12a12 12 0 0 1-24 0z" fill="#f2b33d" />
-      <path d="M21 29h6v7h-6z" fill="#d9961a" />
-      <path d="M14 36h20v6H14z" fill="#d9961a" />
-      <path d="M17 11h4v9h-4z" fill="#fff" opacity={0.5} />
+      <path d="M21 29h6v6h-6z" fill="#d9961a" />
+      <rect x="14" y="35" width="20" height="7" rx="2" fill="#d9961a" />
+      <path d="M17 11h4v8h-4z" fill="#fff" opacity={0.55} />
     </svg>
   );
 }
 
-function Tee() {
-  return (
-    <svg viewBox="0 0 48 48" width={48} height={48} aria-hidden="true">
-      <path d="M17 6 5 12l4 9 5-3v24h20V18l5 3 4-9-12-6c-1 3-3.5 5-7 5s-6-2-7-5z" fill="var(--blue)" />
-      <circle cx="24" cy="24" r="4" fill="#fff" />
-    </svg>
-  );
-}
+const icon = { width: 32, height: 32, viewBox: "0 0 48 48", "aria-hidden": true } as const;
 
-function Sticker() {
-  return (
-    <svg viewBox="0 0 48 48" width={40} height={40} aria-hidden="true">
-      <circle cx="24" cy="24" r="20" fill="var(--green)" />
-      <path d="m19 18-6 6 6 6M29 18l6 6-6 6" fill="none" stroke="#fff" strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function Medal() {
-  return (
-    <svg viewBox="0 0 48 48" width={40} height={40} aria-hidden="true">
-      <path d="M14 4h8l6 14h-8z" fill="var(--blue)" />
-      <path d="M34 4h-8l-6 14h8z" fill="var(--green)" />
-      <circle cx="24" cy="30" r="12" fill="#f2b33d" />
-      <circle cx="24" cy="30" r="7" fill="#d9961a" />
-    </svg>
-  );
-}
-
-const PRIZE_PHASES = [1100, 700, 2600, 1000];
-const BOX = { x: 62, y: 62, size: 76, depth: 48 };
-// where each item floats once the box is open (plane offsets from the box centre, height)
-const ITEMS = [
-  { el: <Trophy />, dx: 6, dy: 6, z: 128 },
-  { el: <Tee />, dx: -30, dy: 40, z: 96 },
-  { el: <Sticker />, dx: 56, dy: 10, z: 100 },
-  { el: <Medal />, dx: 22, dy: 58, z: 80 },
+const SWAG = [
+  {
+    label: "Tee",
+    svg: (
+      <svg {...icon}>
+        <path d="M17 6 5 12l4 9 5-3v24h20V18l5 3 4-9-12-6c-1 3-3.5 5-7 5s-6-2-7-5z" fill="var(--blue)" />
+        <circle cx="24" cy="24" r="4" fill="#fff" />
+      </svg>
+    ),
+  },
+  {
+    label: "Cap",
+    svg: (
+      <svg {...icon}>
+        <path d="M8 30a16 16 0 0 1 32 0z" fill="var(--ink)" />
+        <path d="M4 30h40a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z" fill="var(--blue)" />
+        <circle cx="24" cy="13" r="2.5" fill="var(--blue)" />
+      </svg>
+    ),
+  },
+  {
+    label: "Stickers",
+    svg: (
+      <svg {...icon}>
+        <circle cx="20" cy="22" r="14" fill="var(--green)" />
+        <path d="m16 17-5 5 5 5M24 17l5 5-5 5" fill="none" stroke="#fff" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+        <rect x="27" y="26" width="16" height="16" rx="4" fill="var(--blue)" />
+      </svg>
+    ),
+  },
+  {
+    label: "Cash",
+    svg: (
+      <svg {...icon}>
+        <rect x="4" y="12" width="40" height="24" rx="4" fill="var(--green)" />
+        <circle cx="24" cy="24" r="7" fill="#fff" />
+        <path d="M21 28v-8l6 8v-8M19.5 23h9M19.5 25.5h9" fill="none" stroke="var(--green)" strokeWidth={1.6} />
+      </svg>
+    ),
+  },
+  {
+    label: "Hoodie",
+    svg: (
+      <svg {...icon}>
+        <path d="M16 8c2-3 14-3 16 0l10 6-4 10-4-2v20H14V22l-4 2-4-10z" fill="var(--ink)" />
+        <path d="M18 8c0 6 3 9 6 9s6-3 6-9" fill="var(--blue)" />
+        <rect x="18" y="30" width="12" height="6" rx="2" fill="var(--blue)" />
+      </svg>
+    ),
+  },
+  {
+    label: "Medal",
+    svg: (
+      <svg {...icon}>
+        <path d="M14 4h8l6 14h-8z" fill="var(--blue)" />
+        <path d="M34 4h-8l-6 14h8z" fill="var(--green)" />
+        <circle cx="24" cy="30" r="12" fill="#f2b33d" />
+        <circle cx="24" cy="30" r="6.5" fill="#d9961a" />
+      </svg>
+    ),
+  },
 ];
+
+const ORBIT = { rx: 160, ry: 46, cy: 40 };
 
 export function PrizesScene() {
   const ref = useRef<HTMLDivElement>(null);
+  const items = useRef<(HTMLDivElement | null)[]>([]);
   const inView = useInView(ref, { margin: "-10% 0px" });
   const reduced = useReducedMotion();
-  const [phase, setPhase] = useState(0);
+  const angle = useRef(0);
 
-  useEffect(() => {
-    if (!inView || reduced) return;
-    const id = setTimeout(() => setPhase((p) => (p + 1) % PRIZE_PHASES.length), PRIZE_PHASES[phase]);
-    return () => clearTimeout(id);
-  }, [phase, inView, reduced]);
-
-  const shown = reduced ? 2 : phase;
-  const open = shown === 1 || shown === 2;
-  const out = shown === 2;
-  const cx = BOX.x + BOX.size / 2;
-  const cy = BOX.y + BOX.size / 2;
-  const top = 10 + BOX.depth;
+  useAnimationFrame((_, dt) => {
+    if (inView && !reduced) angle.current += dt * 0.00042;
+    SWAG.forEach((_, i) => {
+      const el = items.current[i];
+      if (!el) return;
+      const a = angle.current + (i / SWAG.length) * Math.PI * 2;
+      const depth = (Math.sin(a) + 1) / 2; // 0 back … 1 front
+      const x = Math.round(Math.cos(a) * ORBIT.rx);
+      const y = Math.round(ORBIT.cy + Math.sin(a) * ORBIT.ry);
+      el.style.transform = `translate(${x}px, ${y}px) scale(${0.8 + depth * 0.2})`;
+      el.style.zIndex = String(depth > 0.5 ? 20 : 1);
+      el.style.opacity = String(0.7 + depth * 0.3);
+    });
+  });
 
   return (
-    <div ref={ref}>
-      <Stage size={200} className="h-[280px]">
-        <Slab x={0} y={0} w={200} h={200} depth={10} radius={10} tone="sunken" topClassName="dot-grid" />
-
-        {/* box body; its top reads as the dark inside once the lid is off */}
-        <Slab
-          x={BOX.x}
-          y={BOX.y}
-          w={BOX.size}
-          h={BOX.size}
-          depth={BOX.depth}
-          radius={4}
-          tone="blue"
-          top="color-mix(in oklab, var(--blue) 45%, black)"
-          style={{ z: 10 }}
-        />
-
-        {/* lid with ribbon, hinged on its back edge */}
-        <Slab
-          x={BOX.x - 4}
-          y={BOX.y - 4}
-          w={BOX.size + 8}
-          h={BOX.size + 8}
-          depth={8}
-          radius={4}
-          tone="green"
-          initial={false}
-          animate={{ z: top, rotateX: open ? 108 : 0 }}
-          transition={{ type: "spring", stiffness: 90, damping: 15 }}
-          style={{ transformOrigin: "50% 0%" }}
-          topClassName="relative"
+    <div ref={ref} className="relative flex h-[280px] w-full items-center justify-center max-sm:scale-[0.78]">
+      {/* orbit track */}
+      <div
+        aria-hidden="true"
+        className="absolute rounded-[50%] border border-dashed border-line-strong"
+        style={{ width: ORBIT.rx * 2, height: ORBIT.ry * 2, transform: `translateY(${ORBIT.cy}px)` }}
+      />
+      {/* trophy on its pedestal */}
+      <div className="relative z-10 flex -translate-y-4 flex-col items-center">
+        <motion.div
+          animate={reduced ? undefined : { y: [0, -6, 0] }}
+          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
         >
-          <span className="absolute inset-y-0 left-1/2 w-3 -translate-x-1/2 bg-white" />
-          <span className="absolute inset-x-0 top-1/2 h-3 -translate-y-1/2 bg-white" />
-        </Slab>
-
-        {/* swag rising out */}
-        {ITEMS.map((it, i) => (
-          <Upright
-            key={i}
-            x={cx + (out ? it.dx : 0)}
-            y={cy + (out ? it.dy : 0)}
-            initial={false}
-            animate={{ z: out ? it.z : top - 30 }}
-            transition={{ type: "spring", stiffness: 80, damping: 13, delay: out ? 0.1 + i * 0.12 : 0 }}
-            style={{ transition: "left 0.8s cubic-bezier(0.22,1,0.36,1), top 0.8s cubic-bezier(0.22,1,0.36,1)" }}
-          >
-            {it.el}
-          </Upright>
-        ))}
-      </Stage>
+          <Trophy />
+        </motion.div>
+        <div className="-mt-1 rounded-lg bg-ink px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-bg">
+          Prizes
+        </div>
+      </div>
+      {SWAG.map((it, i) => (
+        <div
+          key={it.label}
+          ref={(el) => void (items.current[i] = el)}
+          className="absolute left-1/2 top-1/2 -ml-8 -mt-8 will-change-transform"
+        >
+          <div className="flex size-16 flex-col items-center justify-center rounded-2xl border border-line bg-surface">
+            {it.svg}
+          </div>
+          <p className="mt-1.5 text-center font-mono text-[11px] text-muted">{it.label}</p>
+        </div>
+      ))}
     </div>
   );
 }

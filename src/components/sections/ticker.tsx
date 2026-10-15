@@ -27,7 +27,7 @@ function Row({ hidden = false }: { hidden?: boolean }) {
 
 export function Ticker() {
   return (
-    <section aria-label="What you can build" className="frame relative overflow-hidden py-10 md:py-14">
+    <section aria-label="What you can build" className="frame relative overflow-hidden py-8 md:py-11">
       <div className="flex h-14 items-center [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
         <div className="marquee flex w-max">
           <Row />
