@@ -10,6 +10,7 @@ export const contentType = "image/png";
 
 const INK = "#0b0b0d";
 const BLUE = "#2d5bff";
+const RAIL = "#111114";
 const GREEN = "#0f9f5c";
 const MUTED = "#6b6b76";
 const LINE = "#e4e4e8";
@@ -81,10 +82,6 @@ export default async function OpengraphImage() {
           fontFamily: "Geist",
         }}
       >
-        {/* frame rails */}
-        <div style={{ position: "absolute", left: 60, top: 0, bottom: 0, width: 2, background: LINE, display: "flex" }} />
-        <div style={{ position: "absolute", right: 60, top: 0, bottom: 0, width: 2, background: LINE, display: "flex" }} />
-
         {/* the rail */}
         <div
           style={{
@@ -93,7 +90,7 @@ export default async function OpengraphImage() {
             top: 540,
             width: 1100,
             height: 150,
-            background: BLUE,
+            background: RAIL,
             transform: "rotate(-14deg)",
             display: "flex",
           }}
@@ -101,20 +98,28 @@ export default async function OpengraphImage() {
         <Card title="skills.md" status="Parsing" done={false} top={430} left={700} />
         <Card title="Transfer" status="Settled" done top={296} left={890} />
 
-        {/* agent orb */}
+        {/* floating API tile, as in the hero */}
         <div
           style={{
             position: "absolute",
-            left: 990,
-            top: 120,
-            width: 104,
-            height: 104,
-            borderRadius: 999,
-            background: BLUE,
-            border: `6px solid ${GREEN}`,
+            left: 960,
+            top: 110,
+            width: 132,
+            height: 92,
             display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: GREEN,
+            borderRadius: 14,
+            borderBottom: "14px solid #0a7a46",
+            transform: "rotate(-14deg)",
+            fontFamily: "Geist Mono",
+            fontSize: 30,
+            color: "#fff",
           }}
-        />
+        >
+          API
+        </div>
 
         {/* copy */}
         <div style={{ position: "absolute", left: 110, top: 84, display: "flex", flexDirection: "column", width: 860 }}>
