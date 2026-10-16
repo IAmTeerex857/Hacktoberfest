@@ -7,7 +7,7 @@ Landing page for the Spotflow hackathon: online, plus a two-day hackathon in Lag
 - Next.js (App Router) + Tailwind CSS v4
 - React Three Fiber / drei for the 3D "payment rail" hero
 - Motion for UI animation, CSS 3D for the isometric section scenes
-- `@blobatar/react`, `generative-loaders`, `border-beam`
+- `@blobatar/react`, `generative-loaders`
 - `next-themes` for light/dark mode
 
 ## Develop
