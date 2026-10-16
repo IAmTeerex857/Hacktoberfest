@@ -12,6 +12,8 @@
     "@blobatar/react": "^2.7.0",
     "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "^9.8.2",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "blobatar": "^2.7.0",
     "border-beam": "^1.4.1",
     "generative-loaders": "^0.1.1",
