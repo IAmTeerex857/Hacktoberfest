@@ -20,7 +20,7 @@ export const site = {
   signupUrl: "https://forms.gle/YhewNoDt65jZLmiN9",
   // End of Oct 30 in Lagos (WAT, UTC+1).
   registrationDeadline: "2026-10-30T23:59:59+01:00",
-  eventDates: "November 6th and 7th",
-  eventDatesShort: "Nov 6–7",
+  eventDates: "November 13th and 14th",
+  eventDatesShort: "Nov 13–14",
   builders: 30,
 } as const;

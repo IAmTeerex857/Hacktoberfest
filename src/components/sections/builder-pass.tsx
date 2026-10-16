@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useState, type PointerEvent } from "react";
+import { useEffect, useState, type PointerEvent } from "react";
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
 import { useTheme } from "next-themes";
 import { BorderBeam } from "border-beam";
@@ -24,13 +24,10 @@ function serial(seed: string) {
 }
 
 const DEPTH = 10;
+const NAME = "you";
+const PATTERN = bars(NAME);
 
 export function BuilderPass() {
-  const inputId = useId();
-  const [handle, setHandle] = useState("");
-  const clean = handle.replace(/[^a-zA-Z0-9-_.]/g, "").slice(0, 39);
-  const name = clean || "you";
-  const pattern = useMemo(() => bars(name), [name]);
   const { resolvedTheme } = useTheme();
   const reduced = useReducedMotion();
   // Border Beam's generated CSS depends on the theme, which the server can't know.
@@ -55,7 +52,7 @@ export function BuilderPass() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-6">
+    <div className="flex flex-col items-center">
       <div
         onPointerMove={onMove}
         onPointerLeave={onLeave}
@@ -102,10 +99,10 @@ export function BuilderPass() {
               {/* identity */}
               <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6">
                 <div className="rounded-[28px] border border-line bg-bg-sunken p-3">
-                  <Blobatar name={name} size={104} animate="always" hue={clean ? undefined : 262} />
+                  <Blobatar name={NAME} size={104} animate="always" hue={262} />
                 </div>
                 <div className="text-center">
-                  <p className="max-w-[240px] truncate text-[22px] font-semibold tracking-[-0.02em] text-ink">@{name}</p>
+                  <p className="max-w-[240px] truncate text-[22px] font-semibold tracking-[-0.02em] text-ink">@{NAME}</p>
                   <p className="mt-0.5 font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
                     Agentic Payments &amp; DevEx
                   </p>
@@ -131,10 +128,10 @@ export function BuilderPass() {
                 <span aria-hidden="true" className="absolute -right-3 -top-3 size-6 rounded-full border border-line bg-bg" />
                 <div>
                   <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">Admit one builder</p>
-                  <p className="mt-1 font-mono text-[18px] font-semibold text-ink">#{serial(name)}</p>
+                  <p className="mt-1 font-mono text-[18px] font-semibold text-ink">#{serial(NAME)}</p>
                 </div>
                 <div aria-hidden="true" className="flex h-9 items-stretch gap-[2px]">
-                  {pattern.map((w, i) => (
+                  {PATTERN.map((w, i) => (
                     <span key={i} className="bg-ink" style={{ width: w }} />
                   ))}
                 </div>
@@ -142,28 +139,6 @@ export function BuilderPass() {
             </div>
           </BorderBeam>
         </motion.div>
-      </div>
-
-      <div className="w-full max-w-[320px]">
-        <label htmlFor={inputId} className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
-          Preview your pass
-        </label>
-        <div className="mt-2 flex h-11 items-center rounded-full border border-line bg-surface pl-4 pr-2 transition-colors focus-within:border-violet">
-          <span className="font-mono text-sm text-faint">@</span>
-          <input
-            id={inputId}
-            value={handle}
-            onChange={(e) => setHandle(e.target.value)}
-            placeholder="your-github-handle"
-            autoComplete="off"
-            spellCheck={false}
-            maxLength={39}
-            className="ml-1 h-full w-full bg-transparent font-mono text-sm text-ink outline-none placeholder:text-faint"
-          />
-        </div>
-        <p className="mt-2 text-[12px] leading-relaxed text-faint">
-          Just for fun. Nothing is saved here. Registration happens on the signup form.
-        </p>
       </div>
     </div>
   );

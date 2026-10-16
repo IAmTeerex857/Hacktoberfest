@@ -1,6 +1,6 @@
 # Spotflow Agentic Payments & DevEx Challenge
 
-Landing page for the Spotflow hackathon: online, plus a two-day hackathon in Lagos (November 6th and 7th) for 30 selected builders.
+Landing page for the Spotflow hackathon: online, plus a two-day hackathon in Lagos (November 13th and 14th) for 30 selected builders.
 
 ## Stack
 

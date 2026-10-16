@@ -334,8 +334,8 @@ export function SelectScene() {
 /* ---------------------------------------------------------- hack in Lagos */
 
 const DAYS = [
-  { day: "Fri", date: "06", label: "Day 1" },
-  { day: "Sat", date: "07", label: "Day 2" },
+  { day: "Fri", date: "13", label: "Day 1" },
+  { day: "Sat", date: "14", label: "Day 2" },
 ];
 const CREW = ["ada.dev", "tobi", "zainab", "kelechi", "seun"];
 

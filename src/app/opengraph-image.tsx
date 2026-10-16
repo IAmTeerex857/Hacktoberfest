@@ -4,7 +4,7 @@ import { ImageResponse } from "next/og";
 import { LOGO_PATHS } from "@/components/brand/paths";
 import { site } from "@/lib/site";
 
-export const alt = "Spotflow Agentic Payments & DevEx Challenge. Build the next payment workflow. Online + Lagos hackathon, November 6–7.";
+export const alt = "Spotflow Agentic Payments & DevEx Challenge. Build the next payment workflow. Online + Lagos hackathon, November 13–14.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
