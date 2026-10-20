@@ -13,7 +13,7 @@ function resolveSiteUrl() {
 export const site = {
   name: "Spotflow Agentic Payments & DevEx Challenge",
   shortName: "Spotflow Challenge",
-  title: "Build the next payment workflow | Spotflow Agentic Payments & DevEx Challenge",
+  title: "Build the Future of Agentic Payments | Spotflow Agentic Payments & DevEx Challenge",
   description:
     "Build useful tools with AI and payment APIs, contribute to open source, and get an opportunity to join 30 selected builders for a two-day hackathon in Lagos.",
   url: resolveSiteUrl(),

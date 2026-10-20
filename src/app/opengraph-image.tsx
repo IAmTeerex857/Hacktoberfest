@@ -4,13 +4,12 @@ import { ImageResponse } from "next/og";
 import { LOGO_PATHS } from "@/components/brand/paths";
 import { site } from "@/lib/site";
 
-export const alt = "Spotflow Agentic Payments & DevEx Challenge. Build the next payment workflow. Online + Lagos hackathon, November 13–14.";
+export const alt = "Spotflow Agentic Payments & DevEx Challenge. Build the Future of Agentic Payments. Online + Lagos hackathon, November 13–14.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 const INK = "#0b0b0d";
 const BLUE = "#2d5bff";
-const VIOLET = "#8b6cf6";
 const GREEN = "#0f9f5c";
 const MUTED = "#6b6b76";
 const LINE = "#e4e4e8";
@@ -90,7 +89,7 @@ export default async function OpengraphImage() {
             top: 540,
             width: 1100,
             height: 150,
-            background: VIOLET,
+            background: GREEN,
             transform: "rotate(-14deg)",
             display: "flex",
           }}
@@ -142,8 +141,8 @@ export default async function OpengraphImage() {
             Agentic Payments &amp; DevEx Challenge
           </div>
           <div style={{ display: "flex", flexDirection: "column", marginTop: 16, fontSize: 84, fontWeight: 600, lineHeight: 1, letterSpacing: -3.5, color: INK }}>
-            <span>Build the next</span>
-            <span style={{ color: VIOLET }}>payment workflow.</span>
+            <span>Build the Future of</span>
+            <span style={{ color: GREEN }}>Agentic Payments</span>
           </div>
           <div style={{ display: "flex", gap: 14, marginTop: 40 }}>
             {["Online + Lagos", site.eventDatesShort, "Register by Oct 30"].map((t) => (

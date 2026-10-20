@@ -25,7 +25,7 @@ export function SectionHeader({
       className={align === "center" ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}
     >
       <p className={`flex items-center gap-3 font-mono text-[12px] uppercase tracking-[0.16em] text-faint ${align === "center" ? "justify-center" : ""}`}>
-        <span className="text-violet">{index}</span>
+        <span className="text-green">{index}</span>
         {eyebrow}
       </p>
       <h2 className="mt-4 text-[clamp(2rem,4.4vw,3.25rem)] font-semibold leading-[1.02] tracking-[-0.035em] text-ink">{title}</h2>

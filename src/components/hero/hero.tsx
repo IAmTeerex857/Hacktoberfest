@@ -49,7 +49,7 @@ const fade = (delay: number) =>
     transition: { duration: 0.6, delay, ease: EASE },
   }) as const;
 
-const headline = [["Build", "the", "next"], ["payment", "workflow."]];
+const headline = [["Build", "the", "Future", "of"], ["Agentic", "Payments"]];
 
 export function Hero() {
   const { resolvedTheme } = useTheme();
@@ -121,7 +121,7 @@ export function Hero() {
                   return (
                     <span key={w} className="inline-block overflow-hidden pb-[0.08em] align-bottom">
                       <motion.span
-                        className={`inline-block ${li === 1 ? "text-violet" : ""}`}
+                        className={`inline-block ${li === 1 ? "text-green" : ""}`}
                         variants={rise}
                         initial="hidden"
                         animate="shown"
@@ -138,17 +138,12 @@ export function Hero() {
           </h1>
 
           <motion.p {...fade(0.45)} className="mt-8 max-w-[540px] text-[17px] leading-relaxed text-muted md:text-lg">
-            Join the Spotflow Agentic Payments &amp; DevEx Challenge. Build useful tools with AI and payment APIs,
-            contribute to open source, and connect with other developers.
-          </motion.p>
-          <motion.p {...fade(0.55)} className="mt-4 max-w-[540px] text-[17px] leading-relaxed text-muted md:text-lg">
-            Start online, with an opportunity to join{" "}
-            <strong className="font-semibold text-ink">
-              {site.builders} selected builders for a two-day hackathon in Lagos.
-            </strong>
+            Hacktoberfest has evolved beyond basic PRs. This October, build autonomous AI payment agents,
+            standardize agent tools with skills.md, or enhance developer docs using Spotflow&apos;s global
+            infrastructure.
           </motion.p>
 
-          <motion.div {...fade(0.65)} className="mt-10 flex flex-wrap items-center gap-3">
+          <motion.div {...fade(0.55)} className="mt-10 flex flex-wrap items-center gap-3">
             <SlideArrowButton href={site.signupUrl} external size="lg" loadingLabel="Opening form…">
               Sign up now
             </SlideArrowButton>
